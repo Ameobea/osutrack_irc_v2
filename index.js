@@ -18,4 +18,15 @@ var client = new irc.Client('cho.ppy.sh', 'Ameo', {
   floodProtectionDelay: 300,
 });
 
-client.addListener('pm', commands.parseCommand);
+client.addListener('pm', (nick, message)=>{
+  commands.parseCommand(nick, message).then(res=>{
+    console.log(res);
+    if(Array.isArray(res)){
+      res.forEach(msg=>{
+        client.say(nick, msg);
+      });
+    }else{
+      client.say(nick, res);
+    }
+  });
+});

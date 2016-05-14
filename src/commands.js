@@ -6,6 +6,22 @@ Processes queries to the bot, executes necessary commands, and returns result.
 */
 var commands = exports;
 
+var api = require("./api");
+
+var modeIdToString = id=>{
+  if(id === 0 || id == "0"){
+    return "standard";
+  }else if(id == 1 || id == "1"){
+    return "taiko";
+  }else if(id == 2 || id == "2"){
+    return "ctb";
+  }else if(id == 3 || id == "3"){
+    return "mania";
+  }else{
+    return "unknown";
+  }
+};
+
 commands.parseCommand = (nick, message)=>{
   return new Promise((f,r)=>{
     message = message.trim();
@@ -14,61 +30,140 @@ commands.parseCommand = (nick, message)=>{
     var command = split[0];
 
     if(command == "!u" || command == "!update"){
-      if(split.length == 1){
-        commands.update(nick, 0).then(f);
-      }else{
-        var last = command[command.length-1];
-        var username = nick;
-
-        var doUpdate = mode=>{
-          if(split.length > 2){
-            username = "";
-
-            for(var i=1;i<split.length-1;i++){
-              username += split[i];
-            }
-          }
-
-          commands.update(username, mode).then(f);
-        };
-
-        var mode = 0;
-        var hasMode = false;
-        if(last == "osu" || last == "standard" || last == "std"){
-          hasMode = true;
-        }else if(last == "taiko" || last == "tiako"){
-          hasMode = true;
-          mode = 1;
-        }else if(last == "mania" || last == "manai"){
-          hasMode = true;
-          mode = 3;
-        }else if(last == "ctb" || last == "cbt" || last == "catch"){
-          hasMode = true;
-          mode = 2;
-        }
-
-        if(hasMode){
-          doparser.update(mode);
-        }else{
-          if(split.length > 2){
-            username = "";
-            for(var i=1;i<split.length;i++){
-              username += split[i];
-            }
-
-            commands.update(username, 0).then(f);
-          }
-        }
-      }
+      commands.update(nick, split).then(f,r);
     }else if(command == "!s"){
-
+      commands.stats(nick, split).then(f,r);
+    }else if(command == "!r" || command == "!recommend" || command == "!recomend"){
+      f(commands.givePP());
+    }else if(command == "!m" || command == "!mail" || command == "!msg" || command == "!tell"){
+      f("Coming soon!");
+    }else{
+      if(message.length > 0 && message[0] == "!"){
+        f("Unknown command; try !help");
+      }
     }
   });
 };
 
-commands.update = (username, mode)=>{
+commands.update = (nick, split)=>{
+  var createString = data=>{
+    var sign = data.pp_rank >= 0 ? "+" : "-";
+    var res = `Rank: ${sign}${parseInt(data.pp_rank).toLocaleString()}`;
+    res += ` (${sign}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
+    res += `| View detailed data on [https://ameobea.me/osutrack/user/${data.username}`;
+    if(data.mode !== 0 && data.mode !== "0"){
+      res += `/${modeIdToString(data.mode)}`;
+    }
+    res += "](osu!track).";
+
+    if(data.levelup !== false && data.levelup != "false"){
+      return [res, `Congratulations on leveling up!`];
+    }else{
+      return res;
+    }
+  };
+
   return new Promise((f,r)=>{
-    f(`username: ${username}; mode: ${mode}`);
+    if(split.length == 1){
+      api.getUpdate(nick, 0).then(raw=>{f(createString(raw));}, r);
+    }else{
+      var last = split[split.length-1];
+      var username = nick;
+      var mode = 0;
+      var hasMode = false;
+
+      if(last == "osu" || last == "standard" || last == "std"){
+        hasMode = true;
+      }else if(last == "taiko" || last == "tiako"){
+        hasMode = true;
+        mode = 1;
+      }else if(last == "mania" || last == "manai"){
+        hasMode = true;
+        mode = 3;
+      }else if(last == "ctb" || last == "cbt" || last == "catch"){
+        hasMode = true;
+        mode = 2;
+      }
+
+      if(hasMode){
+        if(split.length > 2){
+          username = "";
+
+          for(let i=1;i<split.length-1;i++){
+            username += split[i];
+          }
+        }
+
+        api.getUpdate(username, mode).then(raw=>{f(createString(raw));}, r);
+      }else{
+        if(split.length > 2){
+          username = "";
+          for(let i=1;i<split.length;i++){
+            username += split[i];
+          }
+
+          api.getUpdate(username, 0).then(raw=>{f(createString(raw));}, r);
+        }else{
+          api.getUpdate(split[1], 0).then(raw=>{f(createString(raw));}, r);
+        }
+      }
+    }
+  });
+};
+
+commands.stats = (nick, split)=>{
+  var createString = data=>{
+    var res = `Username: ${data.username} | Rank: ${parseInt(data.pp_rank).toLocaleString()}`;
+    res += ` | PP: ${parseFloat(data.pp_raw).toLocaleString()} | Acc: ${Math.round(data.accuracy * 1000) / 1000}`;
+    res += ` | Playcount: ${parseInt(data.playcount).toLocaleString()} | Level: ${data.level}`;
+    return res;
+  };
+
+  return new Promise((f,r)=>{
+    if(split.length == 1){
+      api.getUser(nick, 0).then(raw=>{f(createString(raw));}, r);
+    }else{
+      var last = split[split.length-1];
+      var username = nick;
+      var mode = 0;
+      var hasMode = false;
+
+      if(last == "osu" || last == "standard" || last == "std"){
+        hasMode = true;
+      }else if(last == "taiko" || last == "tiako"){
+        hasMode = true;
+        mode = 1;
+      }else if(last == "mania" || last == "manai"){
+        hasMode = true;
+        mode = 3;
+      }else if(last == "ctb" || last == "cbt" || last == "catch"){
+        hasMode = true;
+        mode = 2;
+      }
+
+      if(hasMode){
+        if(split.length > 2){
+          username = "";
+
+          for(var i=1;i<split.length-1;i++){
+            username += split[i];
+          }
+        }
+
+        api.getUser(username, mode).then(raw=>{f(createString(raw));}, r);
+      }else{
+        if(split.length > 2){
+          username = "";
+          for(let i=1;i<split.length;i++){
+            username += split[i];
+          }
+
+          api.getUser(username, 0).then(raw=>{f(createString(raw));}, r);
+        }else{
+          api.getUser(split[1], 0).then(raw=>{f(createString(raw));}, r);
+        }
+      }
+    }
   });
 };
 
