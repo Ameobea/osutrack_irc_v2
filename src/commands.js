@@ -31,7 +31,7 @@ commands.parseCommand = (nick, message)=>{
 
     if(command == "!u" || command == "!update"){
       commands.update(nick, split).then(f,r);
-    }else if(command == "!s"){
+    }else if(command == "!s" || command == "stat" || command == "!stats"){
       commands.stats(nick, split).then(f,r);
     }else if(command == "!r" || command == "!recommend" || command == "!recomend"){
       f(commands.givePP());
@@ -47,9 +47,8 @@ commands.parseCommand = (nick, message)=>{
 
 commands.update = (nick, split)=>{
   var createString = data=>{
-    var sign = data.pp_rank >= 0 ? "+" : "-";
-    var res = `Rank: ${sign}${parseInt(data.pp_rank).toLocaleString()}`;
-    res += ` (${sign}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
+    var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${parseInt(data.pp_rank).toLocaleString()}`;
+    res += ` (${data.pp_raw >= 0 ? "+" : ""}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
     res += `| View detailed data on [https://ameobea.me/osutrack/user/${data.username}`;
     if(data.mode !== 0 && data.mode !== "0"){
       res += `/${modeIdToString(data.mode)}`;
@@ -165,6 +164,10 @@ commands.stats = (nick, split)=>{
       }
     }
   });
+};
+
+commands.mail = (nick, split)=>{
+
 };
 
 commands.givePP = ()=>{
