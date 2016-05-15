@@ -1,6 +1,6 @@
 {
   "name": "osutrack_irc",
-  "version": "1.0.0",
+  "version": "2.0.5",
   "description": "Utility to provide osu! players with access to osu!track via in the in-game chat system.",
   "main": "index.js",
   "scripts": {
@@ -12,11 +12,12 @@
   },
   "dependencies": {
     "irc": "0.5.0",
-    "simplest-test": "1.0.0",
-    "node-persist": "0.0.11"
+    "simplest-test": "1.0.4",
+    "node-persist": "0.0.11",
+    "mysql": "2.10.2"
   },
   "author": "Casey Primozic (Ameo) <me@ameo.link>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Ameobea/osutrack_irc_v2/issues"
   },

@@ -7,6 +7,7 @@ Processes queries to the bot, executes necessary commands, and returns result.
 var commands = exports;
 
 var api = require("./api");
+var mail = require("./mail");
 
 var modeIdToString = id=>{
   if(id === 0 || id == "0"){
@@ -22,9 +23,10 @@ var modeIdToString = id=>{
   }
 };
 
-commands.parseCommand = (nick, message)=>{
+commands.parseCommand = (nick, message, client)=>{
   return new Promise((f,r)=>{
     message = message.trim();
+    var origSplit = message.split(" ");
     var lower = message.toLowerCase();
     var split = lower.split(" ");
     var command = split[0];
@@ -36,9 +38,8 @@ commands.parseCommand = (nick, message)=>{
     }else if(command == "!r" || command == "!recommend" || command == "!recomend"){
       f(commands.givePP());
     }else if(command == "!m" || command == "!mail" || command == "!msg" || command == "!tell" || command == "!pm"){
-      f("Coming soon!");
-      //f(commands.mail(nick, split));
-    }else if(command == "!help" || commmand == "!h"){
+      f(commands.mail(nick, origSplit, client));
+    }else if(command == "!help" || command == "!h"){
       f("For a full list of commands, visit https://ameobea.me/osutrack/updater/");
     }else if(command == "!contact"){
       f("PM me on the osu! website, send an email to me@ameo.link, or PM me on reddit /u/ameobea.");
@@ -47,7 +48,7 @@ commands.parseCommand = (nick, message)=>{
     }else if(command == "!site"){
       f("[https://ameobea.me/osutrack/](osu!track website)");
     }else if(command == "!forums"){
-      f("[https://osu.ppy.sh/forum/](osu! forums)")
+      f("[https://osu.ppy.sh/forum/](osu! forums)");
     }else{
       if(message.length > 0 && message[0] == "!"){
         f("Unknown command; try !help");
@@ -55,10 +56,6 @@ commands.parseCommand = (nick, message)=>{
     }
   });
 };
-
-commands.mail = (nick, split)=>{
-
-}
 
 commands.update = (nick, split)=>{
   var createString = data=>{
@@ -182,16 +179,18 @@ commands.stats = (nick, split)=>{
   });
 };
 
-commands.mail = (nick, split)=>{
+commands.mail = (nick, split, client)=>{
   return new Promise((f,r)=>{
-    recip = split[1]; //no way to determine recipient if username has spaces, so _s must be used
-    var mail = "";
+    var recip = split[1]; //no way to determine recipient if username has spaces, so _s must be used
+    var message = "";
     if(split.length < 3){
       f("You must supply a recipient and message like this: !m peppy pls enjoy game");
     }else{
       for(let i=2;i<split.length;i++){
-        mail += split[i];
+        message += " " + split[i];
       }
+
+      mail.send(nick, split[1], message, client).then(f,r);
     }
   });
 };
