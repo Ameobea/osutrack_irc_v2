@@ -35,7 +35,7 @@ client.join("#osu", ()=>{
 
 client.addListener('pm', (nick, message)=>{
   commands.parseCommand(nick, message, client).then(res=>{
-    //TODO: Logging sent/recieved messages
+    console.log(`New message from ${nick}: ${message}`);
     if(Array.isArray(res)){
       res.forEach(msg=>{
         client.say(nick, msg);
@@ -46,6 +46,16 @@ client.addListener('pm', (nick, message)=>{
       console.log(`Sending message to ${nick}: ${res}`);
     }
   });
+});
+
+client.addListener('kill', (nick, reason, channels, message)=>{
+  if(nick.toLowerCase() == pubConf.ircUser){
+    console.log("Bot killed from server...");
+  }
+});
+
+client.addListener('error', message=>{
+  console.log(`New error from server: ${message}`);
 });
 
 client.addListener('join', (channel, username)=>{

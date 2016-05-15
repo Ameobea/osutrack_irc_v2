@@ -59,8 +59,10 @@ commands.parseCommand = (nick, message, client)=>{
 
 commands.update = (nick, split)=>{
   var createString = data=>{
-    if(typeof(data.first) != "undefined" && (data.first == 1 || data.first == "1")){
-      return `${nick} is now tracked.  Gain some PP and !update again!`;
+    if(typeof(data.exists) == "undefined" || data.exists == "0" || data.exists === 0){
+      return `The user ${data.username} can't be found.  Try replaced spaces with underscores and try again.`;
+    }else if(typeof(data.first) != "undefined" && (data.first == 1 || data.first == "1")){
+      return `${data.username} is now tracked.  Gain some PP and !update again!`;
     }else{
       data.pp_rank = -1 * parseInt( data.pp_rank);
       var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${data.pp_rank.toLocaleString()}`;
@@ -106,8 +108,10 @@ commands.update = (nick, split)=>{
           username = "";
 
           for(let i=1;i<split.length-1;i++){
-            username += split[i];
+            username += " " + split[i];
           }
+
+          username = username.trim();
         }
 
         api.getUpdate(username, mode).then(raw=>{f(createString(raw));}, r);
@@ -115,8 +119,9 @@ commands.update = (nick, split)=>{
         if(split.length > 2){
           username = "";
           for(let i=1;i<split.length;i++){
-            username += split[i];
+            username += " " + split[i];
           }
+          username = username.trim();
 
           api.getUpdate(username, 0).then(raw=>{f(createString(raw));}, r);
         }else{
@@ -171,8 +176,9 @@ commands.stats = (nick, split)=>{
         if(split.length > 2){
           username = "";
           for(let i=1;i<split.length;i++){
-            username += split[i];
+            username += " " + split[i];
           }
+          username = username.trim();
 
           api.getUser(username, 0).then(raw=>{f(createString(raw));}, r);
         }else{
