@@ -30,3 +30,5 @@ client.addListener('pm', (nick, message)=>{
     }
   });
 });
+
+console.log("Bot started.");

@@ -35,8 +35,19 @@ commands.parseCommand = (nick, message)=>{
       commands.stats(nick, split).then(f,r);
     }else if(command == "!r" || command == "!recommend" || command == "!recomend"){
       f(commands.givePP());
-    }else if(command == "!m" || command == "!mail" || command == "!msg" || command == "!tell"){
+    }else if(command == "!m" || command == "!mail" || command == "!msg" || command == "!tell" || command == "!pm"){
       f("Coming soon!");
+      //f(commands.mail(nick, split));
+    }else if(command == "!help" || commmand == "!h"){
+      f("For a full list of commands, visit https://ameobea.me/osutrack/updater/");
+    }else if(command == "!contact"){
+      f("PM me on the osu! website, send an email to me@ameo.link, or PM me on reddit /u/ameobea.");
+    }else if(command == "!reddit"){
+      f("[https://reddit.com/r/osugame](/r/osugame)");
+    }else if(command == "!site"){
+      f("[https://ameobea.me/osutrack/](osu!track website)");
+    }else if(command == "!forums"){
+      f("[https://osu.ppy.sh/forum/](osu! forums)")
     }else{
       if(message.length > 0 && message[0] == "!"){
         f("Unknown command; try !help");
@@ -45,9 +56,14 @@ commands.parseCommand = (nick, message)=>{
   });
 };
 
+commands.mail = (nick, split)=>{
+
+}
+
 commands.update = (nick, split)=>{
   var createString = data=>{
-    var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${parseInt(data.pp_rank).toLocaleString()}`;
+    data.pp_rank = -1 * parseInt( data.pp_rank);
+    var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${data.pp_rank.toLocaleString()}`;
     res += ` (${data.pp_raw >= 0 ? "+" : ""}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
     res += `| View detailed data on [https://ameobea.me/osutrack/user/${data.username}`;
     if(data.mode !== 0 && data.mode !== "0"){
@@ -167,7 +183,17 @@ commands.stats = (nick, split)=>{
 };
 
 commands.mail = (nick, split)=>{
-
+  return new Promise((f,r)=>{
+    recip = split[1]; //no way to determine recipient if username has spaces, so _s must be used
+    var mail = "";
+    if(split.length < 3){
+      f("You must supply a recipient and message like this: !m peppy pls enjoy game");
+    }else{
+      for(let i=2;i<split.length;i++){
+        mail += split[i];
+      }
+    }
+  });
 };
 
 commands.givePP = ()=>{
