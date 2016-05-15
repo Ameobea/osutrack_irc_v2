@@ -175,8 +175,9 @@ commands.stats = (nick, split)=>{
           username = "";
 
           for(var i=1;i<split.length-1;i++){
-            username += split[i];
+            username += " " + split[i];
           }
+          username = username.trim();
         }
 
         api.getUser(username, mode).then(raw=>{f(createString(raw));}, r);
