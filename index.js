@@ -27,6 +27,9 @@ client.join("#osu", ()=>{
   console.log("Joined #osu...");
   setTimeout(()=>{
     mail.startupDeliver(client);
+
+    userCount.init(pubConf.usercountDelay, client);
+    console.log("Initialized online users iterator...");
   }, 1000);
 });
 
@@ -48,7 +51,5 @@ client.addListener('pm', (nick, message)=>{
 client.addListener('join', (channel, username)=>{
   mail.check(client, username);
 });
-
-userCount.init(pubConf.usercountDelay);
 
 console.log("Bot started.");

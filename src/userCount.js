@@ -11,12 +11,16 @@ var count = exports;
 count.log = client=>{
   return new Promise((f,r)=>{
     var online = Object.keys(client.chans["#osu"].users).length;
-    dbq.logOnline(online).then(f);
+    dbq.logOnline(online).then(f,r);
   });
 };
 
-count.init = delay=>{
-
+count.init = (delay, client)=>{
+  count.log(client).then(()=>{
+    setTimeout(()=>{
+      count.init(delay, client);
+    }, delay);
+  }, console.log);
 };
 
 // { '#osu':
