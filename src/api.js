@@ -18,8 +18,12 @@ api.getUpdate = (username, mode)=>{
         body += d;
       });
       res.on('end', ()=>{
-        var parsed = JSON.parse(body);
-        f(parsed);
+        try{
+          var parsed = JSON.parse(body);
+          f(parsed);
+        }catch(e){
+          f(false);
+        }
       });
     });
   });
@@ -34,8 +38,12 @@ api.getUser = (username, mode)=>{
         body += d;
       });
       res.on('end', ()=>{
-        var parsed = JSON.parse(body);
-        f(parsed);
+        try{
+          var parsed = JSON.parse(body);
+          f(parsed);
+        }catch(e){
+          f(false);
+        }
       });
     });
   });

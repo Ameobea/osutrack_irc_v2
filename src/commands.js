@@ -59,25 +59,29 @@ commands.parseCommand = (nick, message, client)=>{
 
 commands.update = (nick, split)=>{
   var createString = data=>{
-    if(typeof(data.exists) == "undefined" || data.exists == "0" || data.exists === 0){
-      return `The user ${data.username} can't be found.  Try replaced spaces with underscores and try again.`;
-    }else if(typeof(data.first) != "undefined" && (data.first == 1 || data.first == "1")){
-      return `${data.username} is now tracked.  Gain some PP and !update again!`;
-    }else{
-      data.pp_rank = -1 * parseInt( data.pp_rank);
-      var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${data.pp_rank.toLocaleString()}`;
-      res += ` (${data.pp_raw >= 0 ? "+" : ""}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
-      res += `| View detailed data on [https://ameobea.me/osutrack/user/${data.username}`;
-      if(data.mode !== 0 && data.mode !== "0"){
-        res += `/${modeIdToString(data.mode)}`;
-      }
-      res += " osu!track].";
-
-      if(data.levelup !== false && data.levelup != "false"){
-        return [res, `Congratulations on leveling up!`];
+    if(data){
+      if(typeof(data.exists) == "undefined" || data.exists == "0" || data.exists === 0){
+        return `The user ${data.username} can't be found.  Try replaced spaces with underscores and try again.`;
+      }else if(typeof(data.first) != "undefined" && (data.first == 1 || data.first == "1")){
+        return `${data.username} is now tracked.  Gain some PP and !update again!`;
       }else{
-        return res;
+        data.pp_rank = -1 * parseInt( data.pp_rank);
+        var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${data.pp_rank.toLocaleString()}`;
+        res += ` (${data.pp_raw >= 0 ? "+" : ""}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
+        res += `| View detailed data on [https://ameobea.me/osutrack/user/${data.username}`;
+        if(data.mode !== 0 && data.mode !== "0"){
+          res += `/${modeIdToString(data.mode)}`;
+        }
+        res += " osu!track].";
+
+        if(data.levelup !== false && data.levelup != "false"){
+          return [res, `Congratulations on leveling up!`];
+        }else{
+          return res;
+        }
       }
+    }else{
+      return "Osu!track database is under heavy load; please try again in a few seconds.";
     }
   };
 
@@ -134,10 +138,14 @@ commands.update = (nick, split)=>{
 
 commands.stats = (nick, split)=>{
   var createString = data=>{
-    var res = `Username: ${data.username} | Rank: ${parseInt(data.pp_rank).toLocaleString()}`;
-    res += ` | PP: ${parseFloat(data.pp_raw).toLocaleString()} | Acc: ${Math.round(data.accuracy * 1000) / 1000}`;
-    res += ` | Playcount: ${parseInt(data.playcount).toLocaleString()} | Level: ${data.level}`;
-    return res;
+    if(data){
+      var res = `Username: ${data.username} | Rank: ${parseInt(data.pp_rank).toLocaleString()}`;
+      res += ` | PP: ${parseFloat(data.pp_raw).toLocaleString()} | Acc: ${Math.round(data.accuracy * 1000) / 1000}`;
+      res += ` | Playcount: ${parseInt(data.playcount).toLocaleString()} | Level: ${data.level}`;
+      return res;
+    }else{
+      return "Osu!track database is under heavy load; please try again in a few seconds.";
+    }
   };
 
   return new Promise((f,r)=>{
