@@ -31,7 +31,7 @@ commands.parseCommand = (nick, message, client)=>{
     var split = lower.split(" ");
     var command = split[0];
 
-    if(command == "!u" || command == "!update"){
+    if(command == "!u" || command == "!update" || command == "!t" || command == "!track"){
       commands.update(nick, split).then(f,r);
     }else if(command == "!s" || command == "stat" || command == "!stats"){
       commands.stats(nick, split).then(f,r);
@@ -47,7 +47,7 @@ commands.parseCommand = (nick, message, client)=>{
       f("[https://reddit.com/r/osugame /r/osugame]");
     }else if(command == "!site"){
       f("[https://ameobea.me/osutrack/ osu!track website]");
-    }else if(command == "!forums"){
+    }else if(command == "!forums" || command == "!forum"){
       f("[https://osu.ppy.sh/forum/ osu! forums]");
     }else{
       if(message.length > 0 && message[0] == "!"){

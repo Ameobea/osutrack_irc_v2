@@ -18,25 +18,27 @@ mail.escape = input=>{
 
 mail.send = (from, recip, message, client)=>{
   return new Promise((f,r)=>{
+    var mailbox = storage.getItem(`mailbox-${mail.escape(recip)}`);
+
+    if(typeof(mailbox) == "undefined"){
+      mailbox = {new: [], old: []};
+    }
+
     var sent = false;
     Object.keys(client.chans["#osu"].users).forEach(user=>{
       if(mail.escape(user.toLowerCase()) == recip.toLowerCase().replace(/ |-|'|"|`/gi, "_")){
         client.say(recip, `New message from ${from}: ${message}`);
+        mailbox.old.push({from: from, message: message});
         console.log(`delivering mail to ${recip}: ${message}`);
 
         client.say(from, `Message successfuly sent to ${recip}.`);
         console.log(`Message sent to ${from}: Message successfuly sent to ${recip}.`);
+        storage.setItem(`mailbox-${recip}`, mailbox);
         sent = true;
       }
     });
 
     if(!sent){
-      var mailbox = storage.getItem(`mailbox-${mail.escape(recip)}`);
-
-      if(typeof(mailbox) == "undefined"){
-        mailbox = {new: [], old: []};
-      }
-
       var queued = mailbox.new.filter(newMessage=>{
         return newMessage.from == from;
       });
@@ -63,15 +65,16 @@ mail.check = (client, username)=>{
 mail.deliver = (mailbox, username, client)=>{
   var i=0;
   mailbox.new.forEach(newMessage=>{
+    mailbox.old.push(newMessage);
     setTimeout(()=>{
       client.say(username, `New message from ${newMessage.from}: ${newMessage.message}`);
       console.log(`delivering mail to ${username}: ${newMessage.message}`);
-      mailbox.old.push(newMessage);
       i++;
     }, i * 1000); //queue up the messages one second apart
   });
 
   mailbox.new = [];
+
   storage.setItem(`mailbox-${username}`, mailbox);
 };
 
@@ -81,6 +84,7 @@ mail.startupDeliver = client=>{
   storage.keys().forEach(key=>{
     var split = key.split("-");
     var username = split[1];
+    var message = key.split(username)[1]; //in case there are other dashes in username
 
     if(split[0] == "mailbox"){ //key is a mailbox
       var mailbox = storage.getItem(key);
