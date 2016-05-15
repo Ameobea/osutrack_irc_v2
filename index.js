@@ -16,7 +16,7 @@ var userCount = require("./src/userCount");
 console.log("Starting bot...");
 mail.init();
 
-var client = new irc.Client('cho.ppy.sh', 'Ameo', {
+var client = new irc.Client(pubConf.ircServer, pubConf.ircUser, {
   password: privConf.ircPassword,
   channels: ['#osu'],
   floodProtection: true,

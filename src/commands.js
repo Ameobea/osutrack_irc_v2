@@ -59,19 +59,23 @@ commands.parseCommand = (nick, message, client)=>{
 
 commands.update = (nick, split)=>{
   var createString = data=>{
-    data.pp_rank = -1 * parseInt( data.pp_rank);
-    var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${data.pp_rank.toLocaleString()}`;
-    res += ` (${data.pp_raw >= 0 ? "+" : ""}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
-    res += `| View detailed data on [https://ameobea.me/osutrack/user/${data.username}`;
-    if(data.mode !== 0 && data.mode !== "0"){
-      res += `/${modeIdToString(data.mode)}`;
-    }
-    res += "](osu!track).";
-
-    if(data.levelup !== false && data.levelup != "false"){
-      return [res, `Congratulations on leveling up!`];
+    if(typeof(data.first) != "undefined" && (data.first == 1 || data.first == "1")){
+      return `${nick} is now tracked.  Gain some PP and !update again!`;
     }else{
-      return res;
+      data.pp_rank = -1 * parseInt( data.pp_rank);
+      var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${data.pp_rank.toLocaleString()}`;
+      res += ` (${data.pp_raw >= 0 ? "+" : ""}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
+      res += `| View detailed data on [https://ameobea.me/osutrack/user/${data.username}`;
+      if(data.mode !== 0 && data.mode !== "0"){
+        res += `/${modeIdToString(data.mode)}`;
+      }
+      res += "](osu!track).";
+
+      if(data.levelup !== false && data.levelup != "false"){
+        return [res, `Congratulations on leveling up!`];
+      }else{
+        return res;
+      }
     }
   };
 

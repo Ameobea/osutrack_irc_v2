@@ -1,6 +1,6 @@
 {
   "name": "osutrack_irc",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Utility to provide osu! players with access to osu!track via in the in-game chat system.",
   "main": "index.js",
   "scripts": {
