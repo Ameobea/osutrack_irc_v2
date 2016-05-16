@@ -96,11 +96,11 @@ commands.update = (nick, split)=>{
           res.push(hsMessage);
         }
 
-        if(data.levelup !== false && data.levelup != "false"){
-          return res.push(`Congratulations on leveling up!`);
-        }else{
-          return res;
+        if(data.levelup !== false && data.levelup != "false" && data.first == 1){
+          res.push(`Congratulations on leveling up!`);
         }
+
+        return res;
       }
     }else{
       return "Osu!track database is under heavy load; please try again in a few seconds.";
@@ -134,7 +134,8 @@ commands.update = (nick, split)=>{
           username = "";
 
           for(let i=1;i<split.length-1;i++){
-            username += "_" + split[i];
+            username += i==1 ? "" : "_";
+            username += split[i];
           }
 
           username = username.trim();
@@ -145,7 +146,8 @@ commands.update = (nick, split)=>{
         if(split.length > 2){
           username = "";
           for(let i=1;i<split.length;i++){
-            username += "_" + split[i];
+            username += i==1 ? "" : "_";
+            username += split[i];
           }
           username = username.trim();
 
@@ -197,7 +199,8 @@ commands.stats = (nick, split)=>{
           username = "";
 
           for(var i=1;i<split.length-1;i++){
-            username += "_" + split[i];
+            username += i==1 ? "" : "_";
+            username += split[i];
           }
           username = username.trim();
         }
@@ -207,7 +210,8 @@ commands.stats = (nick, split)=>{
         if(split.length > 2){
           username = "";
           for(let i=1;i<split.length;i++){
-            username += "_" + split[i];
+            username += i==1 ? "" : "_";
+            username += split[i];
           }
           username = username.trim();
 
