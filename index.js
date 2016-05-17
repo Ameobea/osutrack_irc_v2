@@ -6,6 +6,7 @@ interfact to osu!track as well as provide other useful services.
 See README.md for more information.
 */
 var irc = require("irc");
+var https = require("https");
 
 var commands = require("./src/commands");
 var privConf = require("./src/privConf");
@@ -36,6 +37,12 @@ client.join("#osu", ()=>{
 client.addListener('pm', (nick, message)=>{
   commands.parseCommand(nick, message, client).then(res=>{
     console.log(`New message from ${nick}: ${message}`);
+    if(pubConf.ameotrackEnabled){
+      var reqUrl = `${privConf.ameotrackIp}?type=event&category=osutrack_irc&password=`
+      reqUrl += `${privConf.ameotrackPassword}&data={from: ${nick}, message: ${message}}`;
+      https.get(reqUrl);
+    }
+
     if(Array.isArray(res)){
       res.forEach(msg=>{
         client.say(nick, msg);

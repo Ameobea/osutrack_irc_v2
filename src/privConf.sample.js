@@ -11,3 +11,6 @@ privConfig.sqlUsername = "osutrack";
 privConfig.sqlPassword = "password";
 privConfig.sqlUserDb = "osu_track";
 privConfig.sqlUserTable = "online_users";
+
+privConfig.ameotrackIp = "https://test.com/test";
+privConfig.ameotrackPassword = "ss8dJssy3k";
