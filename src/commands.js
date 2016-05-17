@@ -6,8 +6,12 @@ Processes queries to the bot, executes necessary commands, and returns result.
 */
 var commands = exports;
 
+var https = require("https");
+
 var api = require("./api");
 var mail = require("./mail");
+var pubConf = require("./pubConf");
+var privConf = require("./privConf");
 
 var modeIdToString = id=>{
   if(id === 0 || id == "0"){
@@ -30,6 +34,8 @@ commands.parseCommand = (nick, message, client)=>{
     var lower = message.toLowerCase();
     var split = lower.split(" ");
     var command = split[0];
+    var secret = false;
+    var isCommand = true;
 
     if(command == "!u" || command == "!update" || command == "!t" || command == "!track"){
       commands.update(nick, split).then(f,r);
@@ -38,6 +44,7 @@ commands.parseCommand = (nick, message, client)=>{
     }else if(command == "!r" || command == "!recommend" || command == "!recomend"){
       f(commands.givePP());
     }else if(command == "!m" || command == "!mail" || command == "!msg" || command == "!tell" || command == "!pm"){
+      secret = true;
       f(commands.mail(nick, origSplit, client));
     }else if(command == "!help" || command == "!h"){
       f("For a full list of commands, visit https://ameobea.me/osutrack/updater/");
@@ -52,7 +59,15 @@ commands.parseCommand = (nick, message, client)=>{
     }else{
       if(message.length > 0 && message[0] == "!"){
         f("Unknown command; try !help");
+      }else{
+        isCommand = false;
       }
+    }
+
+    if(pubConf.ameotrackEnabled && isCommand){
+      var reqUrl = `${privConf.ameotrackIp}?type=event&category=osutrack_irc&password=`
+      reqUrl += `${privConf.ameotrackPassword}&data={from: ${nick}, message: ${secret ? "redacted" : message}}`;
+      https.get(reqUrl);
     }
   });
 };
