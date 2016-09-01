@@ -64,6 +64,10 @@ commands.parseCommand = (nick, message, client)=>{
       }
     }
 
+    if(message.toLowerCase().indexOf("good night") != -1){
+        client.say(nick, "Good night; sleep well; have good dreams.");
+    }
+
     if(pubConf.ameotrackEnabled && isCommand){
       var reqUrl = `${privConf.ameotrackIp}?type=event&category=osutrack_irc&password=`
       reqUrl += `${privConf.ameotrackPassword}&data={from: ${nick}, message: ${secret ? "redacted" : message}}`;
