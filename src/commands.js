@@ -1,9 +1,7 @@
+// Command Parser
+// Processes queries to the bot, executes necessary commands, and returns result.
 "use strict";
-/*
-Command Parser
 
-Processes queries to the bot, executes necessary commands, and returns result.
-*/
 var commands = exports;
 
 var https = require("https");
@@ -87,7 +85,7 @@ commands.update = (nick, split)=>{
         data.pp_rank = -1 * parseInt( data.pp_rank);
         var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${data.pp_rank.toLocaleString()}`;
         res += ` (${data.pp_raw >= 0 ? "+" : ""}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
-        res += `| View detailed data on [https://ameobea.me/osutrack/user/${data.username}`;
+        res += `| View detailed data on [https://ameobea.me/osutrack/user/${nick}`;
         if(data.mode !== 0 && data.mode !== "0"){
           res += `/${modeIdToString(data.mode)}`;
         }
@@ -111,7 +109,7 @@ commands.update = (nick, split)=>{
             }
           });
 
-          hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${data.username} osu!track].`;
+          hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${nick} osu!track].`;
           res.push(hsMessage);
         }
 
