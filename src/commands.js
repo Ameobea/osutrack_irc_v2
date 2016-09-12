@@ -75,7 +75,7 @@ commands.parseCommand = (nick, message, client)=>{
 };
 
 commands.update = (nick, split)=>{
-  var createString = data=>{
+  var createString = (data, username)=>{
     if(data){
       if(typeof(data.exists) == "undefined" || data.exists == "0" || data.exists === 0){
         return `The user ${data.username} can't be found.  Try replaced spaces with underscores and try again.`;
@@ -85,7 +85,7 @@ commands.update = (nick, split)=>{
         data.pp_rank = -1 * parseInt( data.pp_rank);
         var res = `Rank: ${data.pp_rank >= 0 ? "+" : ""}${data.pp_rank.toLocaleString()}`;
         res += ` (${data.pp_raw >= 0 ? "+" : ""}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
-        res += `| View detailed data on [https://ameobea.me/osutrack/user/${nick}`;
+        res += `| View detailed data on [https://ameobea.me/osutrack/user/${username}`;
         if(data.mode !== 0 && data.mode !== "0"){
           res += `/${modeIdToString(data.mode)}`;
         }
@@ -110,6 +110,7 @@ commands.update = (nick, split)=>{
           });
 
           hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${nick} osu!track].`;
+          hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${username} osu!track].`;
           res.push(hsMessage);
         }
 
@@ -126,7 +127,7 @@ commands.update = (nick, split)=>{
 
   return new Promise((f,r)=>{
     if(split.length == 1){
-      api.getUpdate(nick, 0).then(raw=>{f(createString(raw));}, r);
+      api.getUpdate(nick, 0).then(raw=>{f(createString(raw, nick));}, r);
     }else{
       var last = split[split.length-1];
       var username = nick;
@@ -158,7 +159,7 @@ commands.update = (nick, split)=>{
           username = username.trim();
         }
 
-        api.getUpdate(username, mode).then(raw=>{f(createString(raw));}, r);
+        api.getUpdate(username, mode).then(raw=>{f(createString(raw, username));}, r);
       }else{
         if(split.length > 2){
           username = "";
@@ -168,9 +169,9 @@ commands.update = (nick, split)=>{
           }
           username = username.trim();
 
-          api.getUpdate(username, 0).then(raw=>{f(createString(raw));}, r);
+          api.getUpdate(username, 0).then(raw=>{f(createString(raw, username));}, r);
         }else{
-          api.getUpdate(split[1], 0).then(raw=>{f(createString(raw));}, r);
+          api.getUpdate(split[1], 0).then(raw=>{f(createString(raw, split[1]));}, r);
         }
       }
     }
