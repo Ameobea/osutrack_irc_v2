@@ -159,7 +159,7 @@ commands.update = (nick, split)=>{
           username = username.trim();
         }
 
-        api.getUpdate(username, mode).then(raw=>{f(createString(raw, username));}, r);
+        api.getUpdate(username, mode).then(raw=>{f(createString(raw, username.replace(" ", "%20")));}, r);
       }else{
         if(split.length > 2){
           username = "";
@@ -169,7 +169,7 @@ commands.update = (nick, split)=>{
           }
           username = username.trim();
 
-          api.getUpdate(username, 0).then(raw=>{f(createString(raw, username));}, r);
+          api.getUpdate(username, 0).then(raw=>{f(createString(raw, username.replace(" ", "%20")));}, r);
         }else{
           api.getUpdate(split[1], 0).then(raw=>{f(createString(raw, split[1]));}, r);
         }
