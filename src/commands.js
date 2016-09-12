@@ -163,7 +163,7 @@ commands.update = (nick, split)=>{
         if(split.length > 2){
           username = "";
           for(let i=1;i<split.length;i++){
-            username += i==1 ? "" : "_";
+            username += i==1 ? "" : " ";
             username += split[i];
           }
           username = username.trim();
@@ -215,7 +215,7 @@ commands.stats = (nick, split)=>{
         if(split.length > 2){
           username = "";
 
-          for(var i=1;i<split.length-1;i++){
+          for(var i=1; i<split.length-1; i++){
             username += i==1 ? "" : "_";
             username += split[i];
           }
@@ -226,7 +226,7 @@ commands.stats = (nick, split)=>{
       }else{
         if(split.length > 2){
           username = "";
-          for(let i=1;i<split.length;i++){
+          for(let i=1; i<split.length; i++){
             username += i==1 ? "" : "_";
             username += split[i];
           }
