@@ -33,7 +33,7 @@ mail.send = (from, recip, message, client)=>{
 
         client.say(from, `Message successfuly sent to ${recip}.`);
         console.log(`Message sent to ${from}: Message successfuly sent to ${recip}.`);
-        storage.setItem(`mailbox-${recip}`, mailbox);
+        storage.setItem(`mailbox-${mail.escape(recip)}`, mailbox);
         sent = true;
       }
     });
@@ -88,7 +88,7 @@ mail.startupDeliver = client=>{
 
     if(split[0] == "mailbox"){ //key is a mailbox
       var mailbox = storage.getItem(key);
-      if(mailbox.new.length > 0){ //mailbox has new messages
+      if(mailbox && mailbox.new.length > 0){ //mailbox has new messages
         Object.keys(userlist).forEach(user=>{
           if(mail.escape(user.toLowerCase()) == split[1].toLowerCase().replace(/ |-|'|"|`/gi, "_")){
             mail.deliver(mailbox, split[1], client);

@@ -20,6 +20,7 @@ dbQuery.init = ()=>{
   dbQuery.connection.connect(err=>{
     if(err){
       console.log("Database disconnected - killing bot.");
+      console.log(err);
       process.exit(1); //bot will be restarted automatically until db comes back
     }
   });

@@ -20,7 +20,7 @@ var client = new irc.Client(pubConf.ircServer, pubConf.ircUser, {
   password: privConf.ircPassword,
   channels: ['#osu'],
   floodProtection: true,
-  floodProtectionDelay: 300,
+  floodProtectionDelay: 777,
 });
 
 client.join("#osu", ()=>{
