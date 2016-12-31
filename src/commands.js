@@ -77,9 +77,9 @@ commands.parseCommand = (nick, message, client)=>{
 commands.update = (nick, split)=>{
   var createString = (data, username)=>{
     if(data){
-      if(typeof(data.exists) == "undefined" || data.exists == "0" || data.exists === 0){
+      if(!data.exists){
         return `The user ${data.username} can't be found.  Try replaced spaces with underscores and try again.`;
-      }else if(typeof(data.first) != "undefined" && (data.first == 1 || data.first == "1")){
+      }else if(data.first){
         return `${data.username} is now tracked.  Gain some PP and !update again!`;
       }else{
         data.pp_rank = -1 * parseInt( data.pp_rank);
@@ -109,12 +109,11 @@ commands.update = (nick, split)=>{
             }
           });
 
-          hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${nick} osu!track].`;
           hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${username} osu!track].`;
           res.push(hsMessage);
         }
 
-        if(data.levelup !== false && data.levelup != "false" && data.first == 1){
+        if(data.levelup){
           res.push(`Congratulations on leveling up!`);
         }
 
