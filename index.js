@@ -17,13 +17,12 @@ const userCount = require('./src/userCount');
 console.log('Starting bot...');
 mail.init();
 
-// disable irc client during discord bot development
-// var ircClient = new irc.Client(pubConf.ircServer, pubConf.ircUser, {
-//   password: privConf.ircPassword,
-//   channels: ['#osu'],
-//   floodProtection: true,
-//   floodProtectionDelay: 777,
-// });
+var ircClient = new irc.Client(pubConf.ircServer, pubConf.ircUser, {
+  password: privConf.ircPassword,
+  channels: ['#osu'],
+  floodProtection: true,
+  floodProtectionDelay: 777,
+});
 
 // Object that simulates the functionality of the functionality of the IRC client so that we don't have
 // to change any of the command-handling code.
