@@ -1,66 +1,109 @@
-"use strict";
-/*
-Osu!track IRC bot
-An IRC bot that interfaces with the osu! chat service to provide players with an in-game
-interfact to osu!track as well as provide other useful services.
-See README.md for more information.
-*/
-var irc = require("irc");
+'use strict';
+/**
+ * Osu!track IRC bot
+ * An IRC bot that interfaces with the osu! chat service to provide players with an in-game
+ * interfact to osu!track as well as provide other useful services.
+ * See README.md for more information.
+ */
+const irc = require('irc');
+const Eris = require('eris');
 
-var commands = require("./src/commands");
-var privConf = require("./src/privConf");
-var pubConf = require("./src/pubConf");
-var mail = require("./src/mail");
-var userCount = require("./src/userCount");
+const commands = require('./src/commands');
+const privConf = require('./src/privConf');
+const pubConf = require('./src/pubConf');
+const mail = require('./src/mail');
+const userCount = require('./src/userCount');
 
-console.log("Starting bot...");
+console.log('Starting bot...');
 mail.init();
 
-var client = new irc.Client(pubConf.ircServer, pubConf.ircUser, {
-  password: privConf.ircPassword,
-  channels: ['#osu'],
-  floodProtection: true,
-  floodProtectionDelay: 777,
+// disable irc client during discord bot development
+// var ircClient = new irc.Client(pubConf.ircServer, pubConf.ircUser, {
+//   password: privConf.ircPassword,
+//   channels: ['#osu'],
+//   floodProtection: true,
+//   floodProtectionDelay: 777,
+// });
+
+// Object that simulates the functionality of the functionality of the IRC client so that we don't have
+// to change any of the command-handling code.
+const discordAdapter = {
+  // dummy method that doesn't do anything since Discord client doesn't support sending mail to osu! right now
+  say: (username, msg) => {},
+};
+
+// ircClient.join('#osu', () => {
+//   console.log('Joined #osu...');
+//   setTimeout(() => {
+//     mail.startupDeliver(ircClient);
+
+//     userCount.init(pubConf.usercountDelay, ircClient);
+//     console.log('Initialized online users iterator...');
+//   }, 1000);
+// });
+
+// ircClient.addListener('pm', (nick, message)=>{
+//   commands.parseCommand(nick, message, ircClient, false).then(res => {
+//     console.log(`New IRC message from ${nick}: ${message}`);
+
+//     if(Array.isArray(res)) {
+//       res.forEach(msg => {
+//         ircClient.say(nick, msg);
+//         console.log(`Sending message to ${nick}: ${msg}`);
+//       });
+//     } else {
+//       ircClient.say(nick, res);
+//       console.log(`Sending message to ${nick}: ${res}`);
+//     }
+//   });
+// });
+
+// ircClient.addListener('kill', (nick, reason, channels, message)=>{
+//   if(nick.toLowerCase() == pubConf.ircUser){
+//     console.log('Bot killed from server...');
+//   }
+// });
+
+// ircClient.addListener('error', message=>{
+//   console.log(`New error from IRC server: ${message}`);
+// });
+
+// ircClient.addListener('join', (channel, username)=>{
+//   mail.check(ircClient, username);
+// });
+
+var discordClient = new Eris(privConf.discordBotToken);
+
+discordClient.on('ready', () => {
+  console.log('Successfully initialized Discord bot connection!');
 });
 
-client.join("#osu", ()=>{
-  console.log("Joined #osu...");
-  setTimeout(()=>{
-    mail.startupDeliver(client);
+discordClient.on('messageCreate', msg => {
+  commands.parseCommand(msg.author.username, msg.cleanContent, discordAdapter, true).then(res => {
+    console.log(`New Discord message from ${msg.author.username}: ${msg.cleanContent}`);
 
-    userCount.init(pubConf.usercountDelay, client);
-    console.log("Initialized online users iterator...");
-  }, 1000);
-});
+    // ignore if we don't handle the command since other bots may also be listening
+    if(res == 'Unknown command; try !help')
+      return;
 
-client.addListener('pm', (nick, message)=>{
-  commands.parseCommand(nick, message, client).then(res=>{
-    console.log(`New message from ${nick}: ${message}`);
-
-    if(Array.isArray(res)){
-      res.forEach(msg=>{
-        client.say(nick, msg);
-        console.log(`Sending message to ${nick}: ${msg}`);
+    if(Array.isArray(res)) {
+      res.forEach(subMsg => {
+        msg.channel.createMessage({
+          content: subMsg,
+          tts: false,
+          disableEveryone: true,
+        });
       });
-    }else{
-      client.say(nick, res);
-      console.log(`Sending message to ${nick}: ${res}`);
+    } else {
+      msg.channel.createMessage({
+        content: res,
+        tts: false,
+        disableEveryone: true,
+      });
     }
-  });
+  }).catch(err => console.log(`Error during parseCommand: ${JSON.stringify(err)}`));
 });
 
-client.addListener('kill', (nick, reason, channels, message)=>{
-  if(nick.toLowerCase() == pubConf.ircUser){
-    console.log("Bot killed from server...");
-  }
-});
+discordClient.connect();
 
-client.addListener('error', message=>{
-  console.log(`New error from server: ${message}`);
-});
-
-client.addListener('join', (channel, username)=>{
-  mail.check(client, username);
-});
-
-console.log("Bot started.");
+console.log('Bot started.');
