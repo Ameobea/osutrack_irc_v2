@@ -32,45 +32,45 @@ const discordAdapter = {
   say: (username, msg) => {},
 };
 
-// ircClient.join('#osu', () => {
-//   console.log('Joined #osu...');
-//   setTimeout(() => {
-//     mail.startupDeliver(ircClient);
+ircClient.join('#osu', () => {
+  console.log('Joined #osu...');
+  setTimeout(() => {
+    mail.startupDeliver(ircClient);
 
-//     userCount.init(pubConf.usercountDelay, ircClient);
-//     console.log('Initialized online users iterator...');
-//   }, 1000);
-// });
+    userCount.init(pubConf.usercountDelay, ircClient);
+    console.log('Initialized online users iterator...');
+  }, 1000);
+});
 
-// ircClient.addListener('pm', (nick, message)=>{
-//   commands.parseCommand(nick, message, ircClient, false).then(res => {
-//     console.log(`New IRC message from ${nick}: ${message}`);
+ircClient.addListener('pm', (nick, message)=>{
+  commands.parseCommand(nick, message, ircClient, false).then(res => {
+    console.log(`New IRC message from ${nick}: ${message}`);
 
-//     if(Array.isArray(res)) {
-//       res.forEach(msg => {
-//         ircClient.say(nick, msg);
-//         console.log(`Sending message to ${nick}: ${msg}`);
-//       });
-//     } else {
-//       ircClient.say(nick, res);
-//       console.log(`Sending message to ${nick}: ${res}`);
-//     }
-//   });
-// });
+    if(Array.isArray(res)) {
+      res.forEach(msg => {
+        ircClient.say(nick, msg);
+        console.log(`Sending message to ${nick}: ${msg}`);
+      });
+    } else {
+      ircClient.say(nick, res);
+      console.log(`Sending message to ${nick}: ${res}`);
+    }
+  });
+});
 
-// ircClient.addListener('kill', (nick, reason, channels, message)=>{
-//   if(nick.toLowerCase() == pubConf.ircUser){
-//     console.log('Bot killed from server...');
-//   }
-// });
+ircClient.addListener('kill', (nick, reason, channels, message)=>{
+  if(nick.toLowerCase() == pubConf.ircUser){
+    console.log('Bot killed from server...');
+  }
+});
 
-// ircClient.addListener('error', message=>{
-//   console.log(`New error from IRC server: ${message}`);
-// });
+ircClient.addListener('error', message=>{
+  console.log(`New error from IRC server: ${message}`);
+});
 
-// ircClient.addListener('join', (channel, username)=>{
-//   mail.check(ircClient, username);
-// });
+ircClient.addListener('join', (channel, username)=>{
+  mail.check(ircClient, username);
+});
 
 var discordClient = new Eris(privConf.discordBotToken);
 
