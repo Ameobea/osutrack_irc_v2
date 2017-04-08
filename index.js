@@ -77,6 +77,28 @@ discordClient.on('ready', () => {
   console.log('Successfully initialized Discord bot connection!');
 });
 
+/**
+ * Given a message as either an Object, String, or Array of String/Objects, sends it or all messages in the array to the
+ * specified channel in order.
+ */
+function sendDiscordMessage(message, channel) {
+  if(!message.title) {
+    // is a normal message and not an embed
+    channel.createMessage({
+      content: message,
+      tts: false,
+      disableEveryone: true,
+    });
+  } else {
+    // is an embed object
+    channel.createMessage({
+      embed: message,
+      tts: false,
+      disableEveryone: true,
+    });
+  }
+}
+
 discordClient.on('messageCreate', msg => {
   commands.parseCommand(msg.author.username, msg.cleanContent, discordAdapter, true).then(res => {
     console.log(`New Discord message from ${msg.author.username}: ${msg.cleanContent}`);
@@ -87,20 +109,12 @@ discordClient.on('messageCreate', msg => {
 
     if(Array.isArray(res)) {
       res.forEach(subMsg => {
-        msg.channel.createMessage({
-          content: subMsg,
-          tts: false,
-          disableEveryone: true,
-        });
+        sendDiscordMessage(subMsg, msg.channel);
       });
     } else {
-      msg.channel.createMessage({
-        content: res,
-        tts: false,
-        disableEveryone: true,
-      });
+      sendDiscordMessage(res, msg.channel);
     }
-  }).catch(err => console.log(`Error during parseCommand: ${JSON.stringify(err)}`));
+  }).catch(err => console.log(`Error during parseCommand: ${err}`));
 });
 
 discordClient.connect();

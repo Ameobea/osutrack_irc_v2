@@ -1,9 +1,9 @@
 "use strict";
-/*
-Main Test
-This test is just to verify that the bot processes messages correctly
-acts as expected.
-*/
+/**
+ * Main Test
+ * This test is just to verify that the bot processes messages correctly
+ * acts as expected.
+ */
 var irc = require('irc');
 var simplest = require("simplest-test").init();
 var test = simplest.test;
