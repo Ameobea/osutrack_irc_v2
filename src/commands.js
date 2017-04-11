@@ -126,7 +126,7 @@ commands.update = (nick, split, isDiscord) => {
       } else {
         data.pp_rank = -1 * parseInt( data.pp_rank);
         const descriptionLines = [
-          `[**osu!track Profile**](https://ameobea.me/osutrack/user/${data.username}) \u00B7 [**osu! Profile**](https://osu.ppy.sh/u/${data.username})`,
+          `[**osu!track Profile**](https://ameobea.me/osutrack/user/${username}) \u00B7 [**osu! Profile**](https://osu.ppy.sh/u/${username})`,
           `**Rank**: ${data.pp_rank >= 0 ? '+' : ''}${data.pp_rank.toLocaleString()}`,
           `**PP**: ${data.pp_raw >= 0 ? '+' : ''}${Math.round(data.pp_raw * 1000) / 1000} pp`,
           `**Playcount**: ${parseInt(data.playcount).toLocaleString()}`,
@@ -149,7 +149,7 @@ commands.update = (nick, split, isDiscord) => {
         });
 
         return {
-          title: `Changes since last update for ${username}`,
+          title: `Changes since last update for **${data.username}**`,
           description: descriptionLines.join('\n'),
         };
       }
