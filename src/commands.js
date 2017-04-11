@@ -4,12 +4,8 @@
 
 var commands = exports;
 
-var https = require('https');
-
 var api = require('./api');
 var mail = require('./mail');
-var pubConf = require('./pubConf');
-var privConf = require('./privConf');
 
 var modeIdToString = id => {
   if(id === 0 || id == '0'){
@@ -32,8 +28,6 @@ commands.parseCommand = (nick, message, client, isDiscord) => {
     var lower = message.toLowerCase();
     var split = lower.split(' ');
     var command = split[0];
-    var secret = false;
-    var isCommand = true;
 
     if(command == '!u' || command == '!update' || command == '!t' || command == '!track') {
       commands.update(nick, split, isDiscord).then(f,r);
@@ -42,7 +36,6 @@ commands.parseCommand = (nick, message, client, isDiscord) => {
     } else if(command == '!r' || command == '!recommend' || command == '!recomend') {
       f(commands.givePP());
     } else if(command == '!m' || command == '!mail' || command == '!msg' || command == '!tell' || command == '!pm') {
-      secret = true;
       if(!isDiscord) {
         f(commands.mail(nick, origSplit, client));
       } else {
@@ -61,20 +54,11 @@ commands.parseCommand = (nick, message, client, isDiscord) => {
     } else {
       if(message.length > 0 && message[0] == '!') {
         f('Unknown command; try !help');
-      } else {
-        isCommand = false;
-        secret = true;
       }
     }
 
     if(message.toLowerCase().indexOf('good night') != -1) {
       client.say(nick, 'Good night; sleep well; have good dreams.');
-    }
-
-    if(pubConf.ameotrackEnabled && isCommand) {
-      var reqUrl = `${privConf.ameotrackIp}?type=event&category=osutrack_irc&password=`;
-      reqUrl += `${privConf.ameotrackPassword}&data={from: ${nick}, message: ${secret ? 'redacted' : message}}`;
-      https.get(reqUrl);
     }
   });
 };

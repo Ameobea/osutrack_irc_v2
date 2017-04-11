@@ -12,7 +12,6 @@ const commands = require('./src/commands');
 const privConf = require('./src/privConf');
 const pubConf = require('./src/pubConf');
 const mail = require('./src/mail');
-const userCount = require('./src/userCount');
 
 console.log('Starting bot...');
 mail.init();
@@ -35,9 +34,6 @@ ircClient.join('#osu', () => {
   console.log('Joined #osu...');
   setTimeout(() => {
     mail.startupDeliver(ircClient);
-
-    userCount.init(pubConf.usercountDelay, ircClient);
-    console.log('Initialized online users iterator...');
   }, 1000);
 });
 

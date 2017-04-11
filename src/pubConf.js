@@ -15,5 +15,3 @@ pubConf.ircUser = 'Ameo';
 
 pubConf.usercountDelay = 7.5 * 60 * 1000; //ms between logging online users
 pubConf.logOnlineInserts = false; //set to true to log to file every time an online users datapoint is stored
-
-pubConf.ameotrackEnabled = true; //only set to true if you're Ameo
