@@ -10,6 +10,7 @@ var api = require('./api');
 var mail = require('./mail');
 var pubConf = require('./pubConf');
 var privConf = require('./privConf');
+var dbq = require('./dbQuery');
 
 var modeIdToString = id => {
   if(id === 0 || id == '0'){
@@ -25,7 +26,7 @@ var modeIdToString = id => {
   }
 };
 
-commands.parseCommand = (nick, message, client, isDiscord) => {
+commands.parseCommand = (nick, message, client, discordID) => {
   return new Promise((f,r) => {
     message = message.trim();
     var origSplit = message.split(' ');
@@ -36,14 +37,16 @@ commands.parseCommand = (nick, message, client, isDiscord) => {
     var isCommand = true;
 
     if(command == '!u' || command == '!update' || command == '!t' || command == '!track') {
-      commands.update(nick, split, isDiscord).then(f,r);
+      commands.update(nick, split, discordID, message).then(f,r);
+    } else if(command == '!l' || command == '!link'){
+      commands.link(nick, origSplit, discordID).then(f,r);
     } else if(command == '!s' || command == 'stat' || command == '!stats') {
-      commands.stats(nick, split, isDiscord).then(f,r);
+      commands.stats(nick, split, discordID).then(f,r);
     } else if(command == '!r' || command == '!recommend' || command == '!recomend') {
       f(commands.givePP());
     } else if(command == '!m' || command == '!mail' || command == '!msg' || command == '!tell' || command == '!pm') {
       secret = true;
-      if(!isDiscord) {
+      if(!discordID) {
         f(commands.mail(nick, origSplit, client));
       } else {
         f('Unable to send mail to other users from the Discord client.');
@@ -79,14 +82,14 @@ commands.parseCommand = (nick, message, client, isDiscord) => {
   });
 };
 
-commands.update = (nick, split, isDiscord) => {
+commands.update = (nick, split, discordID) => {
   var createString = (data, username) => {
     if(data) {
       if(!data.exists) {
         return `The user ${data.username} can't be found.  Try replaced spaces with underscores and try again.`;
       } else if(data.first) {
         return `${data.username} is now tracked.  Gain some PP and !update again!`;
-      } else if(!isDiscord) {
+      } else if(!discordID) {
         data.pp_rank = -1 * parseInt( data.pp_rank);
         var res = `Rank: ${data.pp_rank >= 0 ? '+' : ''}${data.pp_rank.toLocaleString()}`;
         res += ` (${data.pp_raw >= 0 ? '+' : ''}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
@@ -211,10 +214,10 @@ commands.update = (nick, split, isDiscord) => {
   });
 };
 
-commands.stats = (nick, split, isDiscord)=>{
+commands.stats = (nick, split, discordID)=>{
   const createString = data => {
     if(data){
-      if(!isDiscord) {
+      if(!discordID) {
         var res = `Username: ${data.username} | Rank: ${parseInt(data.pp_rank).toLocaleString()}`;
         res += ` | PP: ${parseFloat(data.pp_raw).toLocaleString()} | Acc: ${Math.round(data.accuracy * 1000) / 1000}`;
         res += ` | Playcount: ${parseInt(data.playcount).toLocaleString()} | Level: ${data.level}`;
@@ -303,6 +306,19 @@ commands.mail = (nick, split, client) => {
       mail.send(nick, split[1], message, client).then(f,r);
     }
   });
+};
+
+commands.link = (nick, origSplit, discordID) => {
+  if(discordID){
+    const osuName = origSplit.join(' ');
+    dbq.checkPreviousLink(discordID).then(username => {
+      if(username.length == 0){
+        return dbq.createLink(discordID, osuName);
+      } else{
+        return dbq.updateLink(discordID, osuName);
+      }
+    });
+  }
 };
 
 commands.givePP = () => {

@@ -13,6 +13,7 @@ const privConf = require('./src/privConf');
 const pubConf = require('./src/pubConf');
 const mail = require('./src/mail');
 const userCount = require('./src/userCount');
+const dbq = require('./src/dbQuery');
 
 console.log('Starting bot...');
 mail.init();
@@ -100,7 +101,20 @@ function sendDiscordMessage(message, channel) {
 }
 
 discordClient.on('messageCreate', msg => {
-  commands.parseCommand(msg.author.username, msg.cleanContent, discordAdapter, true).then(res => {
+  const nick = new Promise((f,r) => {
+    dbq.checkPreviousLink(discordID).then(username => {
+      if(username.length !== 0){
+        f(username.join(' ')); //Does it return an array?
+      } else{
+        f(msg.author.username)
+      }
+    });
+  });
+  /*This may bring up some issues, using the method I have used. 
+  This is due to the fact that every command will use the nick chosen. 
+  This could be fixed by passing a fith variable through the parseCommand which means both the 
+  potential nick or msg.author.username wil be sent.*/
+  commands.parseCommand(msg.author.username, msg.cleanContent, discordAdapter, msg.author.id).then(res => { 
     console.log(`New Discord message from ${msg.author.username}: ${msg.cleanContent}`);
 
     // ignore if we don't handle the command since other bots may also be listening
