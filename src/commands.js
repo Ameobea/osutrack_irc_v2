@@ -5,6 +5,7 @@
 var commands = exports;
 
 var https = require('https');
+const _ = require('lodash');
 
 var api = require('./api');
 var mail = require('./mail');
@@ -310,8 +311,9 @@ commands.mail = (nick, split, client) => {
 
 commands.link = (nick, origSplit, discordID) => {
   if(discordID){
-    const osuName = origSplit.join(' ');
-    dbq.checkPreviousLink(discordID).then(username => {
+    const osuName = _.tail(origSplit).join(' ');
+
+    return dbq.checkPreviousLink(discordID).then(username => {
       if(username.length == 0){
         return dbq.createLink(discordID, osuName);
       } else{

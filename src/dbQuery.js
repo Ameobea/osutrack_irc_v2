@@ -67,7 +67,8 @@ dbQuery.createLink = (discordID, osuName) => {
     if(!dbQuery.connection){
       dbQuery.init();
     }
-    dbQuery.connection.query(`INSERT INTO ${privConf.discordLinkTable} (discordID, osuUser) VALUES (?,?)`, [discordID,osuName], (err, res)=>{//Complete this ting
+
+    dbQuery.connection.query(`INSERT INTO ${privConf.discordLinkTable} (discordID, osuUser) VALUES (?,?)`, [discordID, osuName], (err, res)=>{//Complete this ting
       if(err){
         console.log('Unable to insert data in MySQL.');
         f('Unable to link user.');
