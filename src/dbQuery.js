@@ -57,7 +57,7 @@ dbQuery.checkPreviousLink = discordID => {
       }else{
         console.log('Checking for links within the database.');
       }
-      f(res);
+      f(res[0].osuUser);
     });
   });
 };
