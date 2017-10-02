@@ -13,6 +13,7 @@ const privConf = require('./src/privConf');
 const pubConf = require('./src/pubConf');
 const mail = require('./src/mail');
 const userCount = require('./src/userCount');
+const dbq = require('./src/dbQuery');
 
 console.log('Starting bot...');
 mail.init();
@@ -100,21 +101,28 @@ function sendDiscordMessage(message, channel) {
 }
 
 discordClient.on('messageCreate', msg => {
-  commands.parseCommand(msg.author.username, msg.cleanContent, discordAdapter, true).then(res => {
-    console.log(`New Discord message from ${msg.author.username}: ${msg.cleanContent}`);
-
-    // ignore if we don't handle the command since other bots may also be listening
-    if(res == 'Unknown command; try !help')
-      return;
-
-    if(Array.isArray(res)) {
-      res.forEach(subMsg => {
-        sendDiscordMessage(subMsg, msg.channel);
-      });
-    } else {
-      sendDiscordMessage(res, msg.channel);
+  var nick = '';
+  dbq.checkPreviousLink(msg.author.id).then(username => {
+    if(username){
+      nick = username;
+    } else{
+      nick = msg.author.username;
     }
-  }).catch(err => console.log(`Error during parseCommand: ${err}`));
+    commands.parseCommand(nick, msg.cleanContent, discordAdapter, msg.author.id).then(res => { 
+      console.log(`New Discord message from ${nick}: ${msg.cleanContent}`);
+
+      // ignore if we don't handle the command since other bots may also be listening
+      if(res == 'Unknown command; try !help')
+        return;
+      if(Array.isArray(res)) {
+        res.forEach(subMsg => {
+          sendDiscordMessage(subMsg, msg.channel);
+        });
+      } else {
+        sendDiscordMessage(res, msg.channel);
+      }
+    }).catch(err => console.log(`Error during parseCommand: ${err}`));
+  });
 });
 
 discordClient.connect();
