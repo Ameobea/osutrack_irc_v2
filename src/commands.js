@@ -314,7 +314,7 @@ commands.link = (nick, origSplit, discordID) => {
     const osuName = _.tail(origSplit).join(' ');
 
     return dbq.checkPreviousLink(discordID).then(username => {
-      if(username.length == 0){
+      if(username){
         return dbq.createLink(discordID, osuName);
       } else{
         return dbq.updateLink(discordID, osuName);
