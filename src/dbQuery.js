@@ -52,11 +52,6 @@ dbQuery.checkPreviousLink = discordID => {
     }
 
     dbQuery.connection.query(`SELECT * FROM ${privConf.discordLinkTable} WHERE discordID = ?`, [discordID], (err, res)=>{
-      if(err){
-        console.log('Unable to check data in MySQL.');
-      }else{
-        console.log('Checking for links within the database.');
-      }
       f(res.length > 0 && res[0].osuUser);
     });
   });
