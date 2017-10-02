@@ -103,8 +103,8 @@ function sendDiscordMessage(message, channel) {
 discordClient.on('messageCreate', msg => {
   var nick = '';
   dbq.checkPreviousLink(msg.author.id).then(username => {
-    if(username.length !== 0){
-      nick = username.join(' ');
+    if(username){
+      nick = username;
     } else{
       nick = msg.author.username;
     }
