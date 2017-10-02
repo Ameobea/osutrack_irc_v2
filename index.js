@@ -101,34 +101,28 @@ function sendDiscordMessage(message, channel) {
 }
 
 discordClient.on('messageCreate', msg => {
-  const nick = new Promise((f,r) => {
-    dbq.checkPreviousLink(discordID).then(username => {
-      if(username.length !== 0){
-        f(username.join(' ')); //Does it return an array?
-      } else{
-        f(msg.author.username)
-      }
-    });
-  });
-  /*This may bring up some issues, using the method I have used. 
-  This is due to the fact that every command will use the nick chosen. 
-  This could be fixed by passing a fith variable through the parseCommand which means both the 
-  potential nick or msg.author.username wil be sent.*/
-  commands.parseCommand(msg.author.username, msg.cleanContent, discordAdapter, msg.author.id).then(res => { 
-    console.log(`New Discord message from ${msg.author.username}: ${msg.cleanContent}`);
-
-    // ignore if we don't handle the command since other bots may also be listening
-    if(res == 'Unknown command; try !help')
-      return;
-
-    if(Array.isArray(res)) {
-      res.forEach(subMsg => {
-        sendDiscordMessage(subMsg, msg.channel);
-      });
-    } else {
-      sendDiscordMessage(res, msg.channel);
+  var nick = '';
+  dbq.checkPreviousLink(msg.author.id).then(username => {
+    if(username.length !== 0){
+      nick = username.join(' ');
+    } else{
+      nick = msg.author.username;
     }
-  }).catch(err => console.log(`Error during parseCommand: ${err}`));
+    commands.parseCommand(nick, msg.cleanContent, discordAdapter, msg.author.id).then(res => { 
+      console.log(`New Discord message from ${nick}: ${msg.cleanContent}`);
+
+      // ignore if we don't handle the command since other bots may also be listening
+      if(res == 'Unknown command; try !help')
+        return;
+      if(Array.isArray(res)) {
+        res.forEach(subMsg => {
+          sendDiscordMessage(subMsg, msg.channel);
+        });
+      } else {
+        sendDiscordMessage(res, msg.channel);
+      }
+    }).catch(err => console.log(`Error during parseCommand: ${err}`));
+  });
 });
 
 discordClient.connect();
