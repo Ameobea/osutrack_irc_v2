@@ -7,7 +7,7 @@ var pubConf = exports;
 /******************************************************************\
  * If you want to use the osu!track API, please let me know       *
  * before hand just so I know you won't overload my poor servers. *
-\******************************************************************/
+ \******************************************************************/
 pubConf.apiAddress = 'https://ameobea.me/osutrack/api/';
 
 pubConf.ircServer = 'cho.ppy.sh';
