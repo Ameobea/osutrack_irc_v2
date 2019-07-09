@@ -3,4 +3,3 @@ src/privConf.js
 persist/
 *.txt
 *.log
-yarn.lock

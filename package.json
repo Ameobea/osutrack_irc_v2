@@ -11,12 +11,12 @@
     "url": "git+https://github.com/Ameobea/osutrack_irc_v2.git"
   },
   "dependencies": {
-    "eris": "0.6.0",
-    "irc": "0.5.0",
-    "lodash": "^4.17.4",
-    "mysql": "2.10.2",
+    "eris": "0.10.0",
+    "irc": "0.5.2",
+    "lodash": "^4.17.11",
+    "mysql": "2.17.1",
     "node-persist": "0.0.11",
-    "simplest-test": "1.0.4"
+    "simplest-test": "1.1.0"
   },
   "author": "Casey Primozic (Ameo) <me@ameo.link>",
   "license": "MIT",
