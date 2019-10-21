@@ -32,20 +32,15 @@ dbQuery.logOnline = online =>
       dbQuery.init();
     }
 
-    dbQuery.connection.query(
-      `INSERT INTO ${privConf.sqlUserTable} SET ?`,
-      { users: online },
-      (err, res) => {
-        if (err) {
-          console.log('Unable to insert data into MySQL.');
-        } else {
-          if (pubConf.logOnlineInserts) {
-            console.log('Inserting online data into database.');
-          }
-        }
-        f();
+    dbQuery.connection.query(`INSERT INTO ${privConf.sqlUserTable} SET ?`, { users: online }, err => {
+      if (err) {
+        console.log('Unable to insert data into MySQL.');
+      } else if (pubConf.logOnlineInserts) {
+        console.log('Inserting online data into database.');
       }
-    );
+
+      f();
+    });
   });
 
 dbQuery.checkPreviousLink = discordID =>
@@ -64,7 +59,7 @@ dbQuery.checkPreviousLink = discordID =>
   });
 
 dbQuery.createLink = (discordID, osuName) =>
-  new Promise((f, r) => {
+  new Promise(f => {
     if (!dbQuery.connection) {
       dbQuery.init();
     }
@@ -86,7 +81,7 @@ dbQuery.createLink = (discordID, osuName) =>
   });
 
 dbQuery.updateLink = (discordID, osuName) =>
-  new Promise((f, r) => {
+  new Promise(f => {
     if (!dbQuery.connection) {
       dbQuery.init();
     }
@@ -94,7 +89,7 @@ dbQuery.updateLink = (discordID, osuName) =>
     dbQuery.connection.query(
       `UPDATE ${privConf.discordLinkTable} SET osuUser=(?) WHERE discordID=(?)`,
       [osuName, discordID],
-      (err, res) => {
+      err => {
         if (err) {
           console.log('Unable to update data in MySQL.');
           f('Unable to link user.');

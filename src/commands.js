@@ -27,8 +27,8 @@ var modeIdToString = id => {
   }
 };
 
-commands.parseCommand = (nick, message, client, discordID) => {
-  return new Promise((f, r) => {
+commands.parseCommand = (nick, message, client, discordID) =>
+  new Promise((f, r) => {
     message = message.trim();
     var origSplit = message.split(' ');
     var lower = message.toLowerCase();
@@ -39,37 +39,31 @@ commands.parseCommand = (nick, message, client, discordID) => {
 
     if (command == '!u' || command == '!update' || command == '!t' || command == '!track') {
       commands.update(nick, split, discordID, message).then(f, r);
-    } else if (command == '!l' || command == '!link') {
-      commands.link(nick, origSplit, discordID).then(f, r);
-    } else if (command == '!s' || command == 'stat' || command == '!stats') {
+    } else if (command === '!l' || command === '!link') {
+      commands.link(origSplit, discordID).then(f, r);
+    } else if (command === '!s' || command === 'stat' || command == '!stats') {
       commands.stats(nick, split, discordID).then(f, r);
-    } else if (command == '!r' || command == '!recommend' || command == '!recomend') {
+    } else if (command === '!r' || command === '!recommend' || command == '!recomend') {
       f(commands.givePP());
-    } else if (
-      command == '!m' ||
-      command == '!mail' ||
-      command == '!msg' ||
-      command == '!tell' ||
-      command == '!pm'
-    ) {
+    } else if (command === '!m' || command === '!mail' || command == '!msg' || command == '!tell' || command == '!pm') {
       secret = true;
       if (!discordID) {
         f(commands.mail(nick, origSplit, client));
       } else {
         f('Unable to send mail to other users from the Discord client.');
       }
-    } else if (command == '!help' || command == '!h') {
+    } else if (command === '!help' || command === '!h') {
       f('For a full list of commands, visit https://ameobea.me/osutrack/updater/');
-    } else if (command == '!contact') {
+    } else if (command === '!contact') {
       f('PM me on the osu! website, send an email to me@ameo.link, or PM me on reddit /u/ameobea.');
-    } else if (command == '!reddit') {
+    } else if (command === '!reddit') {
       f('[https://reddit.com/r/osugame /r/osugame]');
-    } else if (command == '!site') {
+    } else if (command === '!site') {
       f('[https://ameobea.me/osutrack/ osu!track website]');
-    } else if (command == '!forums' || command == '!forum') {
+    } else if (command === '!forums' || command === '!forum') {
       f('[https://osu.ppy.sh/forum/ osu! forums]');
     } else {
-      if (message.length > 0 && message[0] == '!') {
+      if (message.length > 0 && message[0] === '!') {
         f('Unknown command; try !help');
       } else {
         isCommand = false;
@@ -83,168 +77,149 @@ commands.parseCommand = (nick, message, client, discordID) => {
 
     if (pubConf.ameotrackEnabled && isCommand) {
       var reqUrl = `${privConf.ameotrackIp}?type=event&category=osutrack_irc&password=`;
-      reqUrl += `${privConf.ameotrackPassword}&data={from: ${nick}, message: ${
-        secret ? 'redacted' : message
-      }}`;
+      reqUrl += `${privConf.ameotrackPassword}&data={from: ${nick}, message: ${secret ? 'redacted' : message}}`;
       https.get(reqUrl);
     }
   });
-};
 
 commands.update = (nick, split, discordID) => {
   var createString = (data, username) => {
-    if (data) {
-      if (!data.exists) {
-        return `The user ${
-          data.username
-        } can't be found.  Try replaced spaces with underscores and try again.`;
-      } else if (data.first) {
-        return `${data.username} is now tracked.  Gain some PP and !update again!`;
-      } else if (!discordID) {
-        data.pp_rank = -1 * parseInt(data.pp_rank);
-        let res = `Rank: ${data.pp_rank >= 0 ? '+' : ''}${data.pp_rank.toLocaleString()}`;
-        res += ` (${data.pp_raw >= 0 ? '+' : ''}${Math.round(data.pp_raw * 1000) /
-          1000} pp) in ${parseInt(data.playcount).toLocaleString()} plays. `;
-        res += `| View detailed data on [https://ameobea.me/osutrack/user/${encodeURIComponent(
-          username
-        )}`;
-        if (data.mode !== 0 && data.mode !== '0') {
-          res += `/${modeIdToString(data.mode)}`;
-        }
-        res += ' osu!track].';
+    if (!data) {
+      return 'Osu!track database is under heavy load; please try again in a few seconds.';
+    }
 
-        res = [res];
-        if (data.newhs && data.newhs.length > 0) {
-          var s = data.newhs.length > 1 ? 's' : '';
-          var c = data.newhs.length < 4 ? ':' : '. ';
+    if (!data.exists) {
+      return `The user ${data.username} can't be found.  Try replaced spaces with underscores and try again.`;
+    } else if (data.first) {
+      return `${data.username} is now tracked.  Gain some PP and !update again!`;
+    } else if (!discordID) {
+      data.pp_rank = -1 * parseInt(data.pp_rank);
+      let res = `Rank: ${data.pp_rank >= 0 ? '+' : ''}${data.pp_rank.toLocaleString()}`;
+      res += ` (${data.pp_raw >= 0 ? '+' : ''}${Math.round(data.pp_raw * 1000) / 1000} pp) in ${parseInt(
+        data.playcount
+      ).toLocaleString()} plays. `;
+      res += `| View detailed data on [https://ameobea.me/osutrack/user/${encodeURIComponent(username)}`;
+      if (data.mode !== 0 && data.mode !== '0') {
+        res += `/${modeIdToString(data.mode)}`;
+      }
+      res += ' osu!track].';
 
-          var hsMessage = `${data.newhs.length} new hiscore${s}${c} `;
+      res = [res];
+      if (data.newhs && data.newhs.length > 0) {
+        var s = data.newhs.length > 1 ? 's' : '';
+        var c = data.newhs.length < 4 ? ':' : '. ';
 
-          let i = 0;
-          data.newhs.forEach(hs => {
-            if (i <= 2) {
-              hsMessage += `[https://osu.ppy.sh/b/${hs.beatmap_id} #${hs.ranking + 1}]: ${
-                hs.pp
-              }pp; `;
-              i++;
-            } else if (i == 3) {
-              hsMessage += 'More omitted. ';
-              i++;
-            }
-          });
-
-          hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${encodeURIComponent(
-            username
-          )} osu!track].`;
-          res.push(hsMessage);
-        }
-
-        if (data.levelup) {
-          res.push('Congratulations on leveling up!');
-        }
-
-        return res;
-      } else {
-        data.pp_rank = -1 * parseInt(data.pp_rank);
-        const descriptionLines = [
-          `[**osu!track Profile**](https://ameobea.me/osutrack/user/${encodeURIComponent(
-            username
-          )}) \u00B7 [**osu! Profile**](https://osu.ppy.sh/u/${encodeURIComponent(username)})`,
-          `**Rank**: ${data.pp_rank >= 0 ? '+' : ''}${data.pp_rank.toLocaleString()}`,
-          `**PP**: ${data.pp_raw >= 0 ? '+' : ''}${Math.round(data.pp_raw * 1000) / 1000} pp`,
-          `**Playcount**: ${parseInt(data.playcount).toLocaleString()}`,
-          `**Accuracy**: ${data.accuracy >= 0 ? '+' : ''}${parseInt(
-            data.accuracy.toLocaleString()
-          )}`,
-        ];
-
-        if (data.newhs.length > 0) {
-          descriptionLines.push('\n**_New Hiscores_**:');
-        }
+        var hsMessage = `${data.newhs.length} new hiscore${s}${c} `;
 
         let i = 0;
         data.newhs.forEach(hs => {
           if (i <= 2) {
-            descriptionLines.push(
-              `[#${hs.ranking + 1} personal best](https://osu.ppy.sh/b/${hs.beatmap_id}): ${
-                hs.pp
-              }pp`
-            );
+            hsMessage += `[https://osu.ppy.sh/b/${hs.beatmap_id} #${hs.ranking + 1}]: ${hs.pp}pp; `;
             i++;
           } else if (i == 3) {
-            descriptionLines.push('More omitted. ');
+            hsMessage += 'More omitted. ';
             i++;
           }
         });
 
-        return {
-          title: `Changes since last update for **${data.username}**`,
-          description: descriptionLines.join('\n'),
-        };
+        hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${encodeURIComponent(
+          username
+        )} osu!track].`;
+        res.push(hsMessage);
       }
-    } else {
-      return 'Osu!track database is under heavy load; please try again in a few seconds.';
+
+      if (data.levelup) {
+        res.push('Congratulations on leveling up!');
+      }
+
+      return res;
     }
+
+    data.pp_rank = -1 * parseInt(data.pp_rank);
+    const descriptionLines = [
+      `[**osu!track Profile**](https://ameobea.me/osutrack/user/${encodeURIComponent(
+        username
+      )}) \u00B7 [**osu! Profile**](https://osu.ppy.sh/u/${encodeURIComponent(username)})`,
+      `**Rank**: ${data.pp_rank >= 0 ? '+' : ''}${data.pp_rank.toLocaleString()}`,
+      `**PP**: ${data.pp_raw >= 0 ? '+' : ''}${Math.round(data.pp_raw * 1000) / 1000} pp`,
+      `**Playcount**: ${parseInt(data.playcount).toLocaleString()}`,
+      `**Accuracy**: ${data.accuracy >= 0 ? '+' : ''}${parseInt(data.accuracy.toLocaleString())}`,
+    ];
+
+    if (data.newhs.length > 0) {
+      descriptionLines.push('\n**_New Hiscores_**:');
+    }
+
+    let i = 0;
+    data.newhs.forEach(hs => {
+      if (i <= 2) {
+        descriptionLines.push(`[#${hs.ranking + 1} personal best](https://osu.ppy.sh/b/${hs.beatmap_id}): ${hs.pp}pp`);
+        i++;
+      } else if (i == 3) {
+        descriptionLines.push('More omitted. ');
+        i++;
+      }
+    });
+
+    return {
+      title: `Changes since last update for **${data.username}**`,
+      description: descriptionLines.join('\n'),
+    };
   };
 
   return new Promise((f, r) => {
-    if (split.length == 1) {
-      api.getUpdate(nick, 0).then(raw => {
-        f(createString(raw, nick));
-      }, r);
-    } else {
-      var last = split[split.length - 1];
-      var username = nick;
-      var mode = 0;
-      var hasMode = false;
-
-      if (last == 'osu' || last == 'standard' || last == 'std') {
-        hasMode = true;
-      } else if (last == 'taiko' || last == 'tiako') {
-        hasMode = true;
-        mode = 1;
-      } else if (last == 'mania' || last == 'manai') {
-        hasMode = true;
-        mode = 3;
-      } else if (last == 'ctb' || last == 'cbt' || last == 'catch') {
-        hasMode = true;
-        mode = 2;
-      }
-
-      if (hasMode) {
-        if (split.length > 2) {
-          username = '';
-
-          for (let i = 1; i < split.length - 1; i++) {
-            username += i == 1 ? '' : '_';
-            username += split[i];
-          }
-
-          username = username.trim();
-        }
-
-        api.getUpdate(username, mode).then(raw => {
-          f(createString(raw, username.replace(' ', '%20')));
-        }, r);
-      } else {
-        if (split.length > 2) {
-          username = '';
-          for (let i = 1; i < split.length; i++) {
-            username += i == 1 ? '' : ' ';
-            username += split[i];
-          }
-          username = username.trim();
-
-          api.getUpdate(username, 0).then(raw => {
-            f(createString(raw, username.replace(' ', '%20')));
-          }, r);
-        } else {
-          api.getUpdate(split[1], 0).then(raw => {
-            f(createString(raw, split[1]));
-          }, r);
-        }
-      }
+    if (split.length === 1) {
+      api.getUpdate(nick, 0).then(raw => f(createString(raw, nick)), r);
+      return;
     }
+
+    var last = split[split.length - 1];
+    var username = nick;
+    var mode = 0;
+    var hasMode = false;
+
+    if (last == 'osu' || last == 'standard' || last == 'std') {
+      hasMode = true;
+    } else if (last == 'taiko' || last == 'tiako') {
+      hasMode = true;
+      mode = 1;
+    } else if (last == 'mania' || last == 'manai') {
+      hasMode = true;
+      mode = 3;
+    } else if (last == 'ctb' || last == 'cbt' || last == 'catch') {
+      hasMode = true;
+      mode = 2;
+    }
+
+    if (hasMode) {
+      if (split.length > 2) {
+        username = '';
+
+        for (let i = 1; i < split.length - 1; i++) {
+          username += i == 1 ? '' : '_';
+          username += split[i];
+        }
+
+        username = username.trim();
+      }
+
+      api.getUpdate(username, mode).then(raw => f(createString(raw, username.replace(' ', '%20'))), r);
+      return;
+    }
+
+    if (split.length > 2) {
+      username = '';
+      for (let i = 1; i < split.length; i++) {
+        username += i == 1 ? '' : ' ';
+        username += split[i];
+      }
+      username = username.trim();
+
+      api.getUpdate(username, 0).then(raw => f(createString(raw, username.replace(' ', '%20'))), r);
+      return;
+    }
+
+    api.getUpdate(split[1], 0).then(raw => f(createString(raw, split[1])), r);
   });
 };
 
@@ -253,9 +228,7 @@ commands.stats = (nick, split, discordID) => {
     if (data) {
       if (!discordID) {
         var res = `Username: ${data.username} | Rank: ${parseInt(data.pp_rank).toLocaleString()}`;
-        res += ` | PP: ${parseFloat(data.pp_raw).toLocaleString()} | Acc: ${Math.round(
-          data.accuracy * 1000
-        ) / 1000}`;
+        res += ` | PP: ${parseFloat(data.pp_raw).toLocaleString()} | Acc: ${Math.round(data.accuracy * 1000) / 1000}`;
         res += ` | Playcount: ${parseInt(data.playcount).toLocaleString()} | Level: ${data.level}`;
         return res;
       } else {
@@ -279,67 +252,60 @@ commands.stats = (nick, split, discordID) => {
   };
 
   return new Promise((f, r) => {
-    if (split.length == 1) {
-      api.getUser(nick, 0).then(raw => {
-        f(createString(raw));
-      }, r);
+    if (split.length === 1) {
+      api.getUser(nick, 0).then(raw => f(createString(raw)), r);
+      return;
+    }
+    var last = split[split.length - 1];
+    var username = nick;
+    var mode = 0;
+    var hasMode = false;
+
+    if (['osu', 'standard', 'std'].includes(last)) {
+      hasMode = true;
+    } else if (last === 'taiko' || last === 'tiako') {
+      hasMode = true;
+      mode = 1;
+    } else if (last === 'mania' || last === 'manai') {
+      hasMode = true;
+      mode = 3;
+    } else if (['ctb', 'cbt', 'catch'].includes(last)) {
+      hasMode = true;
+      mode = 2;
+    }
+
+    if (hasMode) {
+      if (split.length > 2) {
+        username = '';
+
+        for (var i = 1; i < split.length - 1; i++) {
+          username += i == 1 ? '' : '_';
+          username += split[i];
+        }
+        username = username.trim();
+      }
+
+      api.getUser(username, mode).then(raw => f(createString(raw)), r);
+      return;
+    }
+
+    if (split.length > 2) {
+      username = '';
+      for (let i = 1; i < split.length; i++) {
+        username += i == 1 ? '' : '_';
+        username += split[i];
+      }
+      username = username.trim();
+
+      api.getUser(username, 0).then(raw => f(createString(raw)), r);
     } else {
-      var last = split[split.length - 1];
-      var username = nick;
-      var mode = 0;
-      var hasMode = false;
-
-      if (['osu', 'standard', 'std'].includes(last)) {
-        hasMode = true;
-      } else if (last == 'taiko' || last == 'tiako') {
-        hasMode = true;
-        mode = 1;
-      } else if (last == 'mania' || last == 'manai') {
-        hasMode = true;
-        mode = 3;
-      } else if (['ctb', 'cbt', 'catch'].includes(last)) {
-        hasMode = true;
-        mode = 2;
-      }
-
-      if (hasMode) {
-        if (split.length > 2) {
-          username = '';
-
-          for (var i = 1; i < split.length - 1; i++) {
-            username += i == 1 ? '' : '_';
-            username += split[i];
-          }
-          username = username.trim();
-        }
-
-        api.getUser(username, mode).then(raw => {
-          f(createString(raw));
-        }, r);
-      } else {
-        if (split.length > 2) {
-          username = '';
-          for (let i = 1; i < split.length; i++) {
-            username += i == 1 ? '' : '_';
-            username += split[i];
-          }
-          username = username.trim();
-
-          api.getUser(username, 0).then(raw => {
-            f(createString(raw));
-          }, r);
-        } else {
-          api.getUser(split[1], 0).then(raw => {
-            f(createString(raw));
-          }, r);
-        }
-      }
+      api.getUser(split[1], 0).then(raw => f(createString(raw)), r);
     }
   });
 };
 
-commands.mail = (nick, split, client) => {
-  return new Promise((f, r) => {
+commands.mail = (nick, split, client) =>
+  new Promise((f, r) => {
     var message = '';
     if (split.length < 3) {
       f('You must supply a recipient and message like this: !m rrtyui pls enjoy game');
@@ -351,24 +317,25 @@ commands.mail = (nick, split, client) => {
       mail.send(nick, split[1], message, client).then(f, r);
     }
   });
-};
 
-commands.link = (nick, origSplit, discordID) => {
-  if (discordID) {
-    const osuName = _.tail(origSplit).join(' ');
-
-    return dbq.checkPreviousLink(discordID).then(username => {
-      if (!username && username !== '') {
-        return dbq.createLink(discordID, osuName);
-      } else {
-        return dbq.updateLink(discordID, osuName);
-      }
-    });
+commands.link = (origSplit, discordID) => {
+  if (!discordID) {
+    return Promise.resolve("Linking only works if you're using Discord");
   }
+
+  const osuName = _.tail(origSplit).join(' ');
+
+  return dbq.checkPreviousLink(discordID).then(username => {
+    if (!username && username !== '') {
+      return dbq.createLink(discordID, osuName);
+    } else {
+      return dbq.updateLink(discordID, osuName);
+    }
+  });
 };
 
 commands.givePP = () => {
-  var lucky = Math.round(Math.random() * 11);
+  const lucky = Math.round(Math.random() * 11);
 
   if (lucky === 0) {
     return '[https://osu.ppy.sh/b/219311 Muryoku P - Existence [appearance AR9]]: 958pp | 95: 952pp | 98: 965pp | 99: 998pp | 100: 1002pp | 2:30 ★ 8.32 ♫ 290 AR9';

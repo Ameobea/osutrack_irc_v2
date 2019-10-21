@@ -11,7 +11,7 @@
     "url": "git+https://github.com/Ameobea/osutrack_irc_v2.git"
   },
   "dependencies": {
-    "eris": "0.10.0",
+    "eris": "0.11.0",
     "irc": "0.5.2",
     "lodash": "^4.17.13",
     "mysql": "2.17.1",
