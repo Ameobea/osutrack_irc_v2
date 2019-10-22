@@ -7,7 +7,6 @@ const dbQuery = exports;
 
 const mysql = require('mysql');
 const privConf = require('./privConf');
-const pubConf = require('./pubConf');
 
 dbQuery.init = () => {
   dbQuery.connection = mysql.createConnection({
@@ -25,23 +24,6 @@ dbQuery.init = () => {
     }
   });
 };
-
-dbQuery.logOnline = online =>
-  new Promise((f, r) => {
-    if (!dbQuery.connection) {
-      dbQuery.init();
-    }
-
-    dbQuery.connection.query(`INSERT INTO ${privConf.sqlUserTable} SET ?`, { users: online }, err => {
-      if (err) {
-        console.log('Unable to insert data into MySQL.');
-      } else if (pubConf.logOnlineInserts) {
-        console.log('Inserting online data into database.');
-      }
-
-      f();
-    });
-  });
 
 dbQuery.checkPreviousLink = discordID =>
   new Promise((f, r) => {
@@ -67,8 +49,7 @@ dbQuery.createLink = (discordID, osuName) =>
     dbQuery.connection.query(
       `INSERT INTO ${privConf.discordLinkTable} (discordID, osuUser) VALUES (?,?)`,
       [discordID, osuName],
-      (err, res) => {
-        //Complete this ting
+      err => {
         if (err) {
           console.log('Unable to insert data in MySQL.');
           f('`Unable to link user.`');

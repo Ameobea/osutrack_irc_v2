@@ -12,7 +12,6 @@ const commands = require('./src/commands');
 const privConf = require('./src/privConf');
 const pubConf = require('./src/pubConf');
 const mail = require('./src/mail');
-const userCount = require('./src/userCount');
 const dbq = require('./src/dbQuery');
 
 console.log('Starting bot...');
@@ -29,24 +28,19 @@ var ircClient = new irc.Client(pubConf.ircServer, pubConf.ircUser, {
 // to change any of the command-handling code.
 const discordAdapter = {
   // dummy method that doesn't do anything since Discord client doesn't support sending mail to osu! right now
-  say: (username, msg) => {},
+  say: (_username, _msg) => {},
 };
 
 ircClient.join('#osu', () => {
   console.log('Joined #osu...');
-  setTimeout(() => {
-    mail.startupDeliver(ircClient);
-
-    userCount.init(pubConf.usercountDelay, ircClient);
-    console.log('Initialized online users iterator...');
-  }, 1000);
+  setTimeout(() => mail.startupDeliver(ircClient), 1000);
 });
 
-ircClient.addListener('pm', (nick, message)=>{
+ircClient.addListener('pm', (nick, message) =>
   commands.parseCommand(nick, message, ircClient, false).then(res => {
     console.log(`New IRC message from ${nick}: ${message}`);
 
-    if(Array.isArray(res)) {
+    if (Array.isArray(res)) {
       res.forEach(msg => {
         ircClient.say(nick, msg);
         console.log(`Sending message to ${nick}: ${msg}`);
@@ -55,35 +49,29 @@ ircClient.addListener('pm', (nick, message)=>{
       ircClient.say(nick, res);
       console.log(`Sending message to ${nick}: ${res}`);
     }
-  });
-});
+  })
+);
 
-ircClient.addListener('kill', (nick, reason, channels, message)=>{
-  if(nick.toLowerCase() == pubConf.ircUser){
+ircClient.addListener('kill', (nick, _reason, _channels, _message) => {
+  if (nick.toLowerCase() == pubConf.ircUser) {
     console.log('Bot killed from server...');
   }
 });
 
-ircClient.addListener('error', message=>{
-  console.log(`New error from IRC server: ${message}`);
-});
+ircClient.addListener('error', message => console.log(`New error from IRC server: ${message}`));
 
-ircClient.addListener('join', (channel, username)=>{
-  mail.check(ircClient, username);
-});
+ircClient.addListener('join', (_channel, username) => mail.check(ircClient, username));
 
 var discordClient = new Eris(privConf.discordBotToken);
 
-discordClient.on('ready', () => {
-  console.log('Successfully initialized Discord bot connection!');
-});
+discordClient.on('ready', () => console.log('Successfully initialized Discord bot connection!'));
 
 /**
  * Given a message as either an Object, String, or Array of String/Objects, sends it or all messages in the array to the
  * specified channel in order.
  */
 function sendDiscordMessage(message, channel) {
-  if(!message.title) {
+  if (!message.title) {
     // is a normal message and not an embed
     channel.createMessage({
       content: message,
@@ -100,30 +88,28 @@ function sendDiscordMessage(message, channel) {
   }
 }
 
-discordClient.on('messageCreate', msg => {
-  var nick = '';
+discordClient.on('messageCreate', msg =>
   dbq.checkPreviousLink(msg.author.id).then(username => {
-    if(username){
-      nick = username;
-    } else{
-      nick = msg.author.username;
-    }
-    commands.parseCommand(nick, msg.cleanContent, discordAdapter, msg.author.id).then(res => { 
-      console.log(`New Discord message from ${nick}: ${msg.cleanContent}`);
+    const nick = username ? username : msg.author.username;
 
-      // ignore if we don't handle the command since other bots may also be listening
-      if(res == 'Unknown command; try !help')
-        return;
-      if(Array.isArray(res)) {
-        res.forEach(subMsg => {
-          sendDiscordMessage(subMsg, msg.channel);
-        });
-      } else {
-        sendDiscordMessage(res, msg.channel);
-      }
-    }).catch(err => console.log(`Error during parseCommand: ${err}`));
-  });
-});
+    commands
+      .parseCommand(nick, msg.cleanContent, discordAdapter, msg.author.id)
+      .then(res => {
+        console.log(`New Discord message from ${nick}: ${msg.cleanContent}`);
+
+        // ignore if we don't handle the command since other bots may also be listening
+        if (res == 'Unknown command; try !help') return;
+        if (Array.isArray(res)) {
+          res.forEach(subMsg => {
+            sendDiscordMessage(subMsg, msg.channel);
+          });
+        } else {
+          sendDiscordMessage(res, msg.channel);
+        }
+      })
+      .catch(err => console.log(`Error during parseCommand: ${err}`));
+  })
+);
 
 discordClient.connect();
 
