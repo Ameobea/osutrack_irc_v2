@@ -2,25 +2,20 @@
 # yarn lockfile v1
 
 
-async-limiter@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"
-  integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
-
 bignumber.js@7.2.1:
   version "7.2.1"
-  resolved "https://nexus.stackline.com/repository/npm-group/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
   integrity sha512-S4XzBk5sMB+Rcb/LNcpzXr57VRTxgAvaAEDAl1AwRx27j00hT84O6OkteE7u8UB3NuaaygCRrEpqox4uDOrbdQ==
 
 core-util-is@~1.0.0:
   version "1.0.2"
-  resolved "https://nexus.stackline.com/repository/npm-group/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
+  resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-eris@0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/eris/-/eris-0.11.0.tgz#d494dc4946df8d82002d5a02492773bdc147c8a5"
-  integrity sha512-fPLQj1BuOb4b5jQFAhoxLMjkmgFq53o9H8Q78dFXIUBVX9k2AbKO93MzstMfZi4UqaSI2Oz52RaM9kAsr7eJNg==
+eris@0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/eris/-/eris-0.11.1.tgz#b4c9ba9645c5eef9f9922c2be3c41395a3121a61"
+  integrity sha512-Ct32iXjESOnmklxZCEA281BQsTlAsS9xzQkbGlnvzXshCjBptWJ5h8Oxbu67ui1DirsYs0WipB8EBC9ITQ5ZQA==
   dependencies:
     ws "^7.1.2"
   optionalDependencies:
@@ -29,24 +24,24 @@ eris@0.11.0:
 
 iconv@~2.2.1:
   version "2.2.3"
-  resolved "https://nexus.stackline.com/repository/npm-group/iconv/-/iconv-2.2.3.tgz#e084d60eeb7d73da7f0a9c096e4c8abe090bfaed"
+  resolved "https://registry.yarnpkg.com/iconv/-/iconv-2.2.3.tgz#e084d60eeb7d73da7f0a9c096e4c8abe090bfaed"
   integrity sha1-4ITWDut9c9p/CpwJbkyKvgkL+u0=
   dependencies:
     nan "^2.3.5"
 
 inherits@~2.0.3:
   version "2.0.4"
-  resolved "https://nexus.stackline.com/repository/npm-group/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
+  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
 irc-colors@^1.1.0:
   version "1.5.0"
-  resolved "https://nexus.stackline.com/repository/npm-group/irc-colors/-/irc-colors-1.5.0.tgz#08834c01ead88b0fd88386a5f2af8f2b0bb963fb"
+  resolved "https://registry.yarnpkg.com/irc-colors/-/irc-colors-1.5.0.tgz#08834c01ead88b0fd88386a5f2af8f2b0bb963fb"
   integrity sha512-HtszKchBQTcqw1DC09uD7i7vvMayHGM1OCo6AHt5pkgZEyo99ClhHTMJdf+Ezc9ovuNNxcH89QfyclGthjZJOw==
 
 irc@0.5.2:
   version "0.5.2"
-  resolved "https://nexus.stackline.com/repository/npm-group/irc/-/irc-0.5.2.tgz#3714f4768365a96d0b2f776bc91166beb2464bbc"
+  resolved "https://registry.yarnpkg.com/irc/-/irc-0.5.2.tgz#3714f4768365a96d0b2f776bc91166beb2464bbc"
   integrity sha1-NxT0doNlqW0LL3dryRFmvrJGS7w=
   dependencies:
     irc-colors "^1.1.0"
@@ -56,29 +51,29 @@ irc@0.5.2:
 
 isarray@~1.0.0:
   version "1.0.0"
-  resolved "https://nexus.stackline.com/repository/npm-group/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
+  resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
 
-lodash@^4.17.13:
+lodash@^4.17.15:
   version "4.17.15"
-  resolved "https://nexus.stackline.com/repository/npm-group/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
 minimist@0.0.8:
   version "0.0.8"
-  resolved "https://nexus.stackline.com/repository/npm-group/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
   integrity sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=
 
 mkdirp@~0.5.1:
   version "0.5.1"
-  resolved "https://nexus.stackline.com/repository/npm-group/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
 
 mysql@2.17.1:
   version "2.17.1"
-  resolved "https://nexus.stackline.com/repository/npm-group/mysql/-/mysql-2.17.1.tgz#62bba4a039a9b2f73638cd1652ce50fc6f682899"
+  resolved "https://registry.yarnpkg.com/mysql/-/mysql-2.17.1.tgz#62bba4a039a9b2f73638cd1652ce50fc6f682899"
   integrity sha512-7vMqHQ673SAk5C8fOzTG2LpPcf3bNt0oL3sFpxPEEFp1mdlDcrLK0On7z8ZYKaaHrHwNcQ/MTUz7/oobZ2OyyA==
   dependencies:
     bignumber.js "7.2.1"
@@ -88,19 +83,19 @@ mysql@2.17.1:
 
 nan@^2.3.3, nan@^2.3.5:
   version "2.14.0"
-  resolved "https://nexus.stackline.com/repository/npm-group/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
 
 node-icu-charset-detector@~0.2.0:
   version "0.2.0"
-  resolved "https://nexus.stackline.com/repository/npm-group/node-icu-charset-detector/-/node-icu-charset-detector-0.2.0.tgz#c2320da374ddcb671fc54cb4a0e041e156ffd639"
+  resolved "https://registry.yarnpkg.com/node-icu-charset-detector/-/node-icu-charset-detector-0.2.0.tgz#c2320da374ddcb671fc54cb4a0e041e156ffd639"
   integrity sha1-wjINo3Tdy2cfxUy0oOBB4Vb/1jk=
   dependencies:
     nan "^2.3.3"
 
 node-persist@0.0.11:
   version "0.0.11"
-  resolved "https://nexus.stackline.com/repository/npm-group/node-persist/-/node-persist-0.0.11.tgz#d66eba3ebef620f079530fa7b13076a906665874"
+  resolved "https://registry.yarnpkg.com/node-persist/-/node-persist-0.0.11.tgz#d66eba3ebef620f079530fa7b13076a906665874"
   integrity sha1-1m66Pr72IPB5Uw+nsTB2qQZmWHQ=
   dependencies:
     mkdirp "~0.5.1"
@@ -108,22 +103,22 @@ node-persist@0.0.11:
 
 opusscript@^0.0.4:
   version "0.0.4"
-  resolved "https://nexus.stackline.com/repository/npm-group/opusscript/-/opusscript-0.0.4.tgz#c718edcfdcd2a1f55fadb266dd07268d4a46afde"
+  resolved "https://registry.yarnpkg.com/opusscript/-/opusscript-0.0.4.tgz#c718edcfdcd2a1f55fadb266dd07268d4a46afde"
   integrity sha512-bEPZFE2lhUJYQD5yfTFO4RhbRZ937x6hRwBC1YoGacT35bwDVwKFP1+amU8NYfZL/v4EU7ZTU3INTqzYAnuP7Q==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
-  resolved "https://nexus.stackline.com/repository/npm-group/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
+  resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
 q@~1.1.1:
   version "1.1.2"
-  resolved "https://nexus.stackline.com/repository/npm-group/q/-/q-1.1.2.tgz#6357e291206701d99f197ab84e57e8ad196f2a89"
+  resolved "https://registry.yarnpkg.com/q/-/q-1.1.2.tgz#6357e291206701d99f197ab84e57e8ad196f2a89"
   integrity sha1-Y1fikSBnAdmfGXq4TlforRlvKok=
 
 readable-stream@2.3.6:
   version "2.3.6"
-  resolved "https://nexus.stackline.com/repository/npm-group/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
   integrity sha512-tQtKA9WIAhBF3+VLAseyMqZeBjW0AHJoxOtYqSUZNJxauErmLbVm2FW1y+J/YA9dUrAC39ITejlZWhVIwawkKw==
   dependencies:
     core-util-is "~1.0.0"
@@ -136,39 +131,37 @@ readable-stream@2.3.6:
 
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
-  resolved "https://nexus.stackline.com/repository/npm-group/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
+  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
 
 simplest-test@1.1.0:
   version "1.1.0"
-  resolved "https://nexus.stackline.com/repository/npm-group/simplest-test/-/simplest-test-1.1.0.tgz#d9f7ab490f961bbd19ed840428a1ffdf781c9d08"
+  resolved "https://registry.yarnpkg.com/simplest-test/-/simplest-test-1.1.0.tgz#d9f7ab490f961bbd19ed840428a1ffdf781c9d08"
   integrity sha1-2ferSQ+WG70Z7YQEKKH/33gcnQg=
 
 sqlstring@2.3.1:
   version "2.3.1"
-  resolved "https://nexus.stackline.com/repository/npm-group/sqlstring/-/sqlstring-2.3.1.tgz#475393ff9e91479aea62dcaf0ca3d14983a7fb40"
+  resolved "https://registry.yarnpkg.com/sqlstring/-/sqlstring-2.3.1.tgz#475393ff9e91479aea62dcaf0ca3d14983a7fb40"
   integrity sha1-R1OT/56RR5rqYtyvDKPRSYOn+0A=
 
 string_decoder@~1.1.1:
   version "1.1.1"
-  resolved "https://nexus.stackline.com/repository/npm-group/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
+  resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
   integrity sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
   dependencies:
     safe-buffer "~5.1.0"
 
 tweetnacl@^1.0.0:
   version "1.0.1"
-  resolved "https://nexus.stackline.com/repository/npm-group/tweetnacl/-/tweetnacl-1.0.1.tgz#2594d42da73cd036bd0d2a54683dd35a6b55ca17"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.1.tgz#2594d42da73cd036bd0d2a54683dd35a6b55ca17"
   integrity sha512-kcoMoKTPYnoeS50tzoqjPY3Uv9axeuuFAZY9M/9zFnhoVvRfxz9K29IMPD7jGmt2c8SW7i3gT9WqDl2+nV7p4A==
 
 util-deprecate@~1.0.1:
   version "1.0.2"
-  resolved "https://nexus.stackline.com/repository/npm-group/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
+  resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
 ws@^7.1.2:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.0.tgz#422eda8c02a4b5dba7744ba66eebbd84bcef0ec7"
-  integrity sha512-+SqNqFbwTm/0DC18KYzIsMTnEWpLwJsiasW/O17la4iDRRIO9uaHbvKiAS3AHgTiuuWerK/brj4O6MYZkei9xg==
-  dependencies:
-    async-limiter "^1.0.0"
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.1.tgz#03ed52423cd744084b2cf42ed197c8b65a936b8e"
+  integrity sha512-sucePNSafamSKoOqoNfBd8V0StlkzJKL2ZAhGQinCfNQ+oacw+Pk7lcdAElecBF2VkLNZRiIb5Oi1Q5lVUVt2A==
