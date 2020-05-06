@@ -1,10 +1,10 @@
-FROM node:9.6.0-stretch
+FROM node:13.6.0-stretch
 
-LABEL MAINTAINER="Casey Primozic <me@ameo.link>"
+LABEL MAINTAINER="Casey Primozic <casey@cprimozic.net>"
 
 ADD . /app
 
 WORKDIR /app
-RUN npm install
+RUN npm install --no-optional
 
-CMD ["node", "/app/index.js"]
+CMD ["./start.sh"]
