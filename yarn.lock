@@ -2,32 +2,32 @@
 # yarn lockfile v1
 
 
-bignumber.js@7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
-  integrity sha512-S4XzBk5sMB+Rcb/LNcpzXr57VRTxgAvaAEDAl1AwRx27j00hT84O6OkteE7u8UB3NuaaygCRrEpqox4uDOrbdQ==
+bignumber.js@9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.0.tgz#805880f84a329b5eac6e7cb6f8274b6d82bdf075"
+  integrity sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
 
 core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-eris@0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/eris/-/eris-0.11.1.tgz#b4c9ba9645c5eef9f9922c2be3c41395a3121a61"
-  integrity sha512-Ct32iXjESOnmklxZCEA281BQsTlAsS9xzQkbGlnvzXshCjBptWJ5h8Oxbu67ui1DirsYs0WipB8EBC9ITQ5ZQA==
+eris@0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/eris/-/eris-0.15.0.tgz#d0744d993d508b2951bc6d0ab380ae39b63c0666"
+  integrity sha512-muBdi5XyMXdxFQ8xUG6yofq40/Z02CHlqJP7zIdHhpdDiHvFM/mybGiFAHuoSYcsVTTvEfbUaAJ+SDEmMjARYw==
   dependencies:
-    ws "^7.1.2"
+    ws "^7.2.1"
   optionalDependencies:
-    opusscript "^0.0.4"
-    tweetnacl "^1.0.0"
+    opusscript "^0.0.8"
+    tweetnacl "^1.0.1"
 
-iconv@~2.2.1:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/iconv/-/iconv-2.2.3.tgz#e084d60eeb7d73da7f0a9c096e4c8abe090bfaed"
-  integrity sha1-4ITWDut9c9p/CpwJbkyKvgkL+u0=
+iconv@~2.1.6:
+  version "2.1.11"
+  resolved "https://registry.yarnpkg.com/iconv/-/iconv-2.1.11.tgz#5f5da93a643506f5ceaa8bd9c78d6174f8b9351a"
+  integrity sha1-X12pOmQ1BvXOqovZx41hdPi5NRo=
   dependencies:
-    nan "^2.3.5"
+    nan "~2.0.4"
 
 inherits@~2.0.3:
   version "2.0.4"
@@ -39,15 +39,15 @@ irc-colors@^1.1.0:
   resolved "https://registry.yarnpkg.com/irc-colors/-/irc-colors-1.5.0.tgz#08834c01ead88b0fd88386a5f2af8f2b0bb963fb"
   integrity sha512-HtszKchBQTcqw1DC09uD7i7vvMayHGM1OCo6AHt5pkgZEyo99ClhHTMJdf+Ezc9ovuNNxcH89QfyclGthjZJOw==
 
-irc@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/irc/-/irc-0.5.2.tgz#3714f4768365a96d0b2f776bc91166beb2464bbc"
-  integrity sha1-NxT0doNlqW0LL3dryRFmvrJGS7w=
+irc@=0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/irc/-/irc-0.5.0.tgz#a8e50a34213b7781001a56ee11c025a6c0d35c98"
+  integrity sha1-qOUKNCE7d4EAGlbuEcAlpsDTXJg=
   dependencies:
     irc-colors "^1.1.0"
   optionalDependencies:
-    iconv "~2.2.1"
-    node-icu-charset-detector "~0.2.0"
+    iconv "~2.1.6"
+    node-icu-charset-detector "~0.1.2"
 
 isarray@~1.0.0:
   version "1.0.0"
@@ -71,29 +71,34 @@ mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mysql@2.17.1:
-  version "2.17.1"
-  resolved "https://registry.yarnpkg.com/mysql/-/mysql-2.17.1.tgz#62bba4a039a9b2f73638cd1652ce50fc6f682899"
-  integrity sha512-7vMqHQ673SAk5C8fOzTG2LpPcf3bNt0oL3sFpxPEEFp1mdlDcrLK0On7z8ZYKaaHrHwNcQ/MTUz7/oobZ2OyyA==
+mysql@2.18.1:
+  version "2.18.1"
+  resolved "https://registry.yarnpkg.com/mysql/-/mysql-2.18.1.tgz#2254143855c5a8c73825e4522baf2ea021766717"
+  integrity sha512-Bca+gk2YWmqp2Uf6k5NFEurwY/0td0cpebAucFpY/3jhrwrVGuxU2uQFCHjU19SJfje0yQvi+rVWdq78hR5lig==
   dependencies:
-    bignumber.js "7.2.1"
-    readable-stream "2.3.6"
+    bignumber.js "9.0.0"
+    readable-stream "2.3.7"
     safe-buffer "5.1.2"
     sqlstring "2.3.1"
 
-nan@^2.3.3, nan@^2.3.5:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
-  integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
+nan@^2.0.0:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
+  integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
 
-node-icu-charset-detector@~0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/node-icu-charset-detector/-/node-icu-charset-detector-0.2.0.tgz#c2320da374ddcb671fc54cb4a0e041e156ffd639"
-  integrity sha1-wjINo3Tdy2cfxUy0oOBB4Vb/1jk=
+nan@~2.0.4:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.0.9.tgz#d02a770f46778842cceb94e17cab31ffc7234a05"
+  integrity sha1-0Cp3D0Z3iELM65ThfKsx/8cjSgU=
+
+node-icu-charset-detector@~0.1.2:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/node-icu-charset-detector/-/node-icu-charset-detector-0.1.4.tgz#4979c21f72cf4f79cbeec27b586d6f7138d0c9cd"
+  integrity sha1-SXnCH3LPT3nL7sJ7WG1vcTjQyc0=
   dependencies:
-    nan "^2.3.3"
+    nan "^2.0.0"
 
-node-persist@0.0.11:
+node-persist@=0.0.11:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/node-persist/-/node-persist-0.0.11.tgz#d66eba3ebef620f079530fa7b13076a906665874"
   integrity sha1-1m66Pr72IPB5Uw+nsTB2qQZmWHQ=
@@ -101,10 +106,10 @@ node-persist@0.0.11:
     mkdirp "~0.5.1"
     q "~1.1.1"
 
-opusscript@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/opusscript/-/opusscript-0.0.4.tgz#c718edcfdcd2a1f55fadb266dd07268d4a46afde"
-  integrity sha512-bEPZFE2lhUJYQD5yfTFO4RhbRZ937x6hRwBC1YoGacT35bwDVwKFP1+amU8NYfZL/v4EU7ZTU3INTqzYAnuP7Q==
+opusscript@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/opusscript/-/opusscript-0.0.8.tgz#00b49e81281b4d99092d013b1812af8654bd0a87"
+  integrity sha512-VSTi1aWFuCkRCVq+tx/BQ5q9fMnQ9pVZ3JU4UHKqTkf0ED3fKEPdr+gKAAl3IA2hj9rrP6iyq3hlcJq3HELtNQ==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
@@ -116,10 +121,10 @@ q@~1.1.1:
   resolved "https://registry.yarnpkg.com/q/-/q-1.1.2.tgz#6357e291206701d99f197ab84e57e8ad196f2a89"
   integrity sha1-Y1fikSBnAdmfGXq4TlforRlvKok=
 
-readable-stream@2.3.6:
-  version "2.3.6"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
-  integrity sha512-tQtKA9WIAhBF3+VLAseyMqZeBjW0AHJoxOtYqSUZNJxauErmLbVm2FW1y+J/YA9dUrAC39ITejlZWhVIwawkKw==
+readable-stream@2.3.7:
+  version "2.3.7"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.7.tgz#1eca1cf711aef814c04f62252a36a62f6cb23b57"
+  integrity sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.3"
@@ -151,17 +156,17 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
-tweetnacl@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.1.tgz#2594d42da73cd036bd0d2a54683dd35a6b55ca17"
-  integrity sha512-kcoMoKTPYnoeS50tzoqjPY3Uv9axeuuFAZY9M/9zFnhoVvRfxz9K29IMPD7jGmt2c8SW7i3gT9WqDl2+nV7p4A==
+tweetnacl@^1.0.1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
+  integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
 util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
-ws@^7.1.2:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.1.tgz#03ed52423cd744084b2cf42ed197c8b65a936b8e"
-  integrity sha512-sucePNSafamSKoOqoNfBd8V0StlkzJKL2ZAhGQinCfNQ+oacw+Pk7lcdAElecBF2VkLNZRiIb5Oi1Q5lVUVt2A==
+ws@^7.2.1:
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.4.tgz#383bc9742cb202292c9077ceab6f6047b17f2d59"
+  integrity sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==
