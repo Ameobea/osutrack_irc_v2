@@ -34,6 +34,24 @@ const commands = [
         .addChoices(...modeChoices)
     ),
   new SlashCommandBuilder()
+    .setName('u')
+    .setDescription(
+      "Updates a user's data in the osu!track database and shows what has changed since the last update."
+    )
+    .addStringOption((option) =>
+      option
+        .setName('username')
+        .setRequired(false)
+        .setDescription('The osu! username to update.')
+    )
+    .addStringOption((option) =>
+      option
+        .setName('mode')
+        .setRequired(false)
+        .setDescription('The osu! mode to update. Defaults to osu!standard.')
+        .addChoices(...modeChoices)
+    ),
+  new SlashCommandBuilder()
     .setName('link')
     .setDescription('Links your username with an osu! username.')
     .addStringOption((option) =>
