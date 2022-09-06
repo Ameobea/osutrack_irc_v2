@@ -79,6 +79,8 @@ client.on('interactionCreate', async (interaction) => {
     `!${interaction.commandName}`
   );
 
+  console.log(`Emulating IRC message: ${emulatedMessage}`);
+
   const ephemeralCommands = ['link'];
 
   if (ephemeralCommands.includes(interaction.commandName)) {
