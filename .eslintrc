@@ -24,5 +24,8 @@
   "globals": {
     "require": true,
     "module": true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest"
   }
 }
