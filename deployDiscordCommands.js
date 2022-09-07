@@ -81,17 +81,8 @@ const commands = [
   new SlashCommandBuilder()
     .setName('contact')
     .setDescription(
-      'Gives information about how to contact me about the tool!'
+      'Gives information about how to contact the devs about the bot'
     ),
-  new SlashCommandBuilder()
-    .setName('reddit')
-    .setDescription('Gives a link to the osu! subreddit'),
-  new SlashCommandBuilder()
-    .setName('site')
-    .setDescription('Gives a link to the osu! website'),
-  new SlashCommandBuilder()
-    .setName('forums')
-    .setDescription('Gives a linkn to the official osu! forums'),
 ];
 
 const rest = new REST({ version: '10' }).setToken(discordBotToken);
