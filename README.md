@@ -9,7 +9,10 @@ This is the second version of the bot; the first version was closed-source, bugg
  3. Obtain an osu! IRC token from here: https://osu.ppy.sh/p/irc
  4. Copy the `/src/privConf.sample.js` file to `/src/privConf.js` and change the values to those appropriate for your installation.
  5. Install dependencies by running `npm i` or `yarn` in the project root directory
- 6. Start the bot by executing the `start.sh` script in the project root.
+ 6. Run `node deployDiscordCommands.js` to populate the slash commands used by the application
+ 7. Start the bot by executing the `start.sh` script in the project root.
+
+Note that the `deployDiscordCommands.js` script should only be run if new slash commands are being added or previous commands are being edited. The Discord API rate limiting is very strict for adding slash commands.
 
 # Using the bot
 The bot should be running live on my account, Ameo.  To use it, just send a message to Ameo in-game with one of the commands that the bot recognizes.  (A full list of commands that the bot recognizes as well as guides on what they do can be found on [the osu!track website](https://ameobea.me/osutrack/updater/index.php).)

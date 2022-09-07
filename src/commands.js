@@ -57,11 +57,23 @@ commands.parseCommand = (nick, message, client, discordID) =>
     } else if (command === '!contact') {
       f('PM me on the osu! website, send an email to me@ameo.link, or PM me on reddit /u/ameobea.');
     } else if (command === '!reddit') {
-      f('[https://reddit.com/r/osugame /r/osugame]');
+      if (discordID) {
+        f('<https://www.reddit.com/r/osugame/>');
+      } else {
+        f('[https://reddit.com/r/osugame /r/osugame]');
+      }
     } else if (command === '!site') {
-      f('[https://ameobea.me/osutrack/ osu!track website]');
+      if (discordID) {
+        f('<https://ameobea.me/osutrack/>');
+      } else {
+        f('[https://ameobea.me/osutrack/ osu!track website]');
+      }
     } else if (command === '!forums' || command === '!forum') {
-      f('[https://osu.ppy.sh/forum/ osu! forums]');
+      if (discordID) {
+        f('<https://osu.ppy.sh/forum/>');
+      } else {
+        f('[https://osu.ppy.sh/forum/ osu! forums]');
+      }
     } else {
       if (message.length > 0 && message[0] === '!') {
         f('Unknown command; try !help');

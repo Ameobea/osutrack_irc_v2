@@ -1,4 +1,4 @@
-FROM node:13.6.0-stretch
+FROM node:17.4.0-stretch
 
 LABEL MAINTAINER="Casey Primozic <casey@cprimozic.net>"
 
