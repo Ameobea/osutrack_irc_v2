@@ -20,13 +20,10 @@ const commands = [
     .setDescription(
       "Updates a user's data in the osu!track database and shows what has changed since the last update."
     )
-    .addStringOption((option) =>
-      option
-        .setName('username')
-        .setRequired(false)
-        .setDescription('The osu! username to update.')
+    .addStringOption(option =>
+      option.setName('username').setRequired(false).setDescription('The osu! username to update.')
     )
-    .addStringOption((option) =>
+    .addStringOption(option =>
       option
         .setName('mode')
         .setRequired(false)
@@ -38,13 +35,10 @@ const commands = [
     .setDescription(
       "Updates a user's data in the osu!track database and shows what has changed since the last update."
     )
-    .addStringOption((option) =>
-      option
-        .setName('username')
-        .setRequired(false)
-        .setDescription('The osu! username to update.')
+    .addStringOption(option =>
+      option.setName('username').setRequired(false).setDescription('The osu! username to update.')
     )
-    .addStringOption((option) =>
+    .addStringOption(option =>
       option
         .setName('mode')
         .setRequired(false)
@@ -54,44 +48,28 @@ const commands = [
   new SlashCommandBuilder()
     .setName('link')
     .setDescription('Links your username with an osu! username.')
-    .addStringOption((option) =>
-      option
-        .setName('username')
-        .setRequired(true)
-        .setDescription('The osu! username to link.')
+    .addStringOption(option =>
+      option.setName('username').setRequired(true).setDescription('The osu! username to link.')
     ),
   new SlashCommandBuilder()
     .setName('stats')
     .setDescription('Views basic information about your or another user.')
-    .addStringOption((option) =>
+    .addStringOption(option =>
       option
         .setName('username')
         .setRequired(false)
         .setDescription('The osu! username to view stats for.')
     )
-    .addStringOption((option) =>
+    .addStringOption(option =>
       option
         .setName('mode')
         .setRequired(false)
-        .setDescription(
-          'The osu! mode to view stats for. Defaults to osu!standard'
-        )
+        .setDescription('The osu! mode to view stats for. Defaults to osu!standard')
         .addChoices(...modeChoices)
     ),
   new SlashCommandBuilder()
     .setName('contact')
-    .setDescription(
-      'Gives information about how to contact me about the tool!'
-    ),
-  new SlashCommandBuilder()
-    .setName('reddit')
-    .setDescription('Gives a link to the osu! subreddit'),
-  new SlashCommandBuilder()
-    .setName('site')
-    .setDescription('Gives a link to the osu! website'),
-  new SlashCommandBuilder()
-    .setName('forums')
-    .setDescription('Gives a linkn to the official osu! forums'),
+    .setDescription('Gives information about how to contact the devs about the bot'),
 ];
 
 const rest = new REST({ version: '10' }).setToken(discordBotToken);

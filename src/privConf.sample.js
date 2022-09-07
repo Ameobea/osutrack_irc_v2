@@ -6,6 +6,7 @@ var privConfig = exports;
 
 privConfig.ircPassword = 'secret';
 privConfig.discordBotToken = 'MzYxNjEwMTA5NDk2ODUyNDgz.DKqcrw.fIRVjwLiO8Aa4LbGnKq0V4PjWvE';
+privConfig.discordClientId = '361610109400000000';
 
 privConfig.sqlIp = 'localhost';
 privConfig.sqlUsername = 'osutrack';
