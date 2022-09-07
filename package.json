@@ -13,7 +13,7 @@
   "dependencies": {
     "discord.js": "^14.3.0",
     "irc": "=0.5.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "mysql": "2.18.1",
     "node-persist": "=0.0.11",
     "simplest-test": "1.1.0"
