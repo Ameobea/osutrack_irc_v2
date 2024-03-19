@@ -1,4 +1,4 @@
-FROM node:17.4.0-stretch
+FROM node:21-bookworm-slim
 
 LABEL MAINTAINER="Casey Primozic <casey@cprimozic.net>"
 
