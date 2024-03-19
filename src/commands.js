@@ -148,10 +148,12 @@ commands.update = (nick, split, discordID) => {
     }
 
     data.pp_rank = -1 * parseInt(data.pp_rank);
+    const osutrackProfileLink = `https://ameobea.me/osutrack/user/${encodeURIComponent(
+      username
+    )}${data.mode !== 0 && data.mode !== '0' ? `/${modeIdToString(data.mode)}` : ''}`;
+    const osuProfileLink = `https://osu.ppy.sh/u/${encodeURIComponent(username)}`;
     const descriptionLines = [
-      `[**osu!track Profile**](https://ameobea.me/osutrack/user/${encodeURIComponent(
-        username
-      )}) \u00B7 [**osu! Profile**](https://osu.ppy.sh/u/${encodeURIComponent(username)})`,
+      `[**osu!track Profile**](${osutrackProfileLink}) \u00B7 [**osu! Profile**](${osuProfileLink})`,
       `**Rank**: ${data.pp_rank >= 0 ? '+' : ''}${data.pp_rank.toLocaleString()}`,
       `**PP**: ${data.pp_raw >= 0 ? '+' : ''}${Math.round(data.pp_raw * 1000) / 1000} pp`,
       `**Playcount**: ${parseInt(data.playcount).toLocaleString()}`,
