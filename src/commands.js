@@ -100,6 +100,10 @@ commands.update = (nick, split, discordID) => {
       return 'Osu!track database is under heavy load; please try again in a few seconds.';
     }
 
+    const encodedUsername = encodeURIComponent(username);
+    const osutrackProfileLink = `https://ameobea.me/osutrack/user/${encodedUsername}${data.mode !== 0 && data.mode !== '0' ? `/${modeIdToString(data.mode)}` : ''}`;
+    const osuProfileLink = `https://osu.ppy.sh/u/${encodedUsername}`;
+
     if (!data.exists) {
       return `The user ${data.username} can't be found.  Try replaced spaces with underscores and try again.`;
     } else if (data.first) {
@@ -134,9 +138,7 @@ commands.update = (nick, split, discordID) => {
           }
         });
 
-        hsMessage += `View your recent hiscores on [https://ameobea.me/osutrack/user/${encodeURIComponent(
-          username
-        )} osu!track].`;
+        hsMessage += `View your recent hiscores on [${osutrackProfileLink} osu!track].`;
         res.push(hsMessage);
       }
 
@@ -148,10 +150,6 @@ commands.update = (nick, split, discordID) => {
     }
 
     data.pp_rank = -1 * parseInt(data.pp_rank);
-    const osutrackProfileLink = `https://ameobea.me/osutrack/user/${encodeURIComponent(
-      username
-    )}${data.mode !== 0 && data.mode !== '0' ? `/${modeIdToString(data.mode)}` : ''}`;
-    const osuProfileLink = `https://osu.ppy.sh/u/${encodeURIComponent(username)}`;
     const descriptionLines = [
       `[**osu!track Profile**](${osutrackProfileLink}) \u00B7 [**osu! Profile**](${osuProfileLink})`,
       `**Rank**: ${data.pp_rank >= 0 ? '+' : ''}${data.pp_rank.toLocaleString()}`,
@@ -248,10 +246,12 @@ commands.stats = (nick, split, discordID) => {
       } else {
         // construct an embed object to be inserted into the message
         const encodedUsername = encodeURIComponent(data.username);
+        const osutrackProfileLink = `https://ameobea.me/osutrack/user/${encodedUsername}${data.mode !== 0 && data.mode !== '0' ? `/${modeIdToString(data.mode)}` : ''}`;
+        const osuProfileLink = `https://osu.ppy.sh/u/${encodedUsername}`;
         return {
           title: `Stats for ${data.username}`,
           description: [
-            `[**osu!track Profile**](https://ameobea.me/osutrack/user/${encodedUsername}) \u00B7 [**osu! Profile**](https://osu.ppy.sh/u/${encodedUsername})`,
+            `[**osu!track Profile**](${osutrackProfileLink}) \u00B7 [**osu! Profile**](${osuProfileLink})`,
             `**Rank**: ${parseInt(data.pp_rank).toLocaleString()}`,
             `**PP**: ${parseFloat(data.pp_raw).toLocaleString()}`,
             `**Accuracy**: ${Math.round(data.accuracy * 1000) / 1000}`,

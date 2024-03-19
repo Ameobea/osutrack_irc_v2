@@ -100,9 +100,9 @@ client.on('interactionCreate', async (interaction) => {
         // ignore if we don't handle the command since other bots may also be listening
         if (res == 'Unknown command; try !help') return;
         if (Array.isArray(res)) {
-          res.forEach(async (subMsg) => {
-            await sendDiscordMessage(subMsg, interaction);
-          });
+          for (let i = 0; i < res.length; i++) {
+            await sendDiscordMessage(res[i], interaction);
+          }
         } else {
           await sendDiscordMessage(res, interaction);
         }
