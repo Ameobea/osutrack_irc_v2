@@ -79,6 +79,22 @@ const commands = [
         .addChoices(...modeChoices)
     ),
   new SlashCommandBuilder()
+    .setName('recent')
+    .setDescription("Views recent top 100 hiscores set by you or another user.")
+    .addStringOption((option) =>
+      option
+        .setName('username')
+        .setRequired(false)
+        .setDescription('The osu! username to view recent hiscores for.')
+    )
+    .addStringOption((option) =>
+      option
+        .setName('mode')
+        .setRequired(false)
+        .setDescription('The osu! mode to view recent hiscores for. Defaults to osu!standard.')
+        .addChoices(...modeChoices)
+    ),
+  new SlashCommandBuilder()
     .setName('contact')
     .setDescription(
       'Gives information about how to contact the devs about the bot'

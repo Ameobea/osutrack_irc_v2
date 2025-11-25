@@ -47,3 +47,19 @@ api.getUser = (username, mode) =>
       });
     });
   });
+
+api.getUserHiscores = async (username, mode) => {
+  const idURL = `https://osu-api-bridge.ameo.dev/users/${encodeURIComponent(username)}/id?mode=${mode}`;
+  const userID = await fetch(idURL).then(res => res.text()).catch(() => null);
+  if (!userID) {
+    console.error(`Failed to fetch user ID for username: ${username}`);
+    return [];
+  }
+  const url = `https://osu-api-bridge.ameo.dev/users/${userID}/hiscores?mode=${mode}`;
+  return fetch(url)
+    .then(res => res.json())
+    .catch((err) => {
+      console.error(`Failed to fetch hiscores for user: ${username}`, err);
+      return [];
+    });
+}

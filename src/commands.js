@@ -43,6 +43,8 @@ commands.parseCommand = (nick, message, client, discordID) =>
       commands.link(origSplit, discordID).then(f, r);
     } else if (command === '!s' || command === 'stat' || command == '!stats') {
       commands.stats(nick, split, discordID).then(f, r);
+    } else if (command === '!recent') {
+      commands.recent(nick, split, discordID).then(f, r);
     } else if (command === '!r' || command === '!recommend' || command == '!recomend') {
       f(commands.givePP());
     } else if (command === '!m' || command === '!mail' || command == '!msg' || command == '!tell' || command == '!pm') {
@@ -317,6 +319,106 @@ commands.stats = (nick, split, discordID) => {
     }
   });
 };
+
+// Finds the best unit in [minutes, hours, days] since the provided `date` and returns a string like "5 days ago"
+const basicTimeago = (date) => {
+  const now = new Date();
+  const secondsAgo = Math.floor((now - date) / 1000);
+
+  const minutes = Math.floor(secondsAgo / 60);
+  if (minutes < 1) {
+    return 'just now';
+  }
+  if (minutes < 60) {
+    return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) {
+    return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+  return `${days} day${days === 1 ? '' : 's'} ago`;
+}
+
+commands.recent = (nick, split, discordID) => {
+  const format = data => {
+    if (!data || data.length === 0) {
+      return 'Failed to fetch recent hiscores';
+    }
+
+    const recentHiscores = data
+      .map((hs, i) => ({ ...hs, ranking: i + 1 }))
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 5);
+
+    if (!discordID) {
+      let res = `Recent hiscores for ${nick}: `;
+      recentHiscores.forEach(hs => {
+        res += `[https://osu.ppy.sh/b/${hs.beatmap_id} #${hs.ranking + 1}]: ${hs.pp}pp (${basicTimeago(new Date(hs.date))}); \n`;
+      });
+      return res;
+    } else {
+      const descriptionLines = recentHiscores.map(
+        hs => `[#${hs.ranking + 1}](https://osu.ppy.sh/b/${hs.beatmap_id}): ${hs.pp}pp (${basicTimeago(new Date(hs.date))})`
+      );
+
+      return {
+        title: `Recent hiscores for ${nick}`,
+        description: descriptionLines.join('\n'),
+      };
+    }
+  }
+
+  if (split.length === 1) {
+    return api.getUserHiscores(nick, 0).then(format);
+  }
+  var last = split[split.length - 1];
+  var username = nick;
+  var mode = 0;
+  var hasMode = false;
+
+  if (['osu', 'standard', 'std'].includes(last)) {
+    hasMode = true;
+  } else if (last === 'taiko' || last === 'tiako') {
+    hasMode = true;
+    mode = 1;
+  } else if (last === 'mania' || last === 'manai') {
+    hasMode = true;
+    mode = 3;
+  } else if (['ctb', 'cbt', 'catch'].includes(last)) {
+    hasMode = true;
+    mode = 2;
+  }
+
+  if (hasMode) {
+    if (split.length > 2) {
+      username = '';
+
+      for (var i = 1; i < split.length - 1; i++) {
+        username += i == 1 ? '' : '_';
+        username += split[i];
+      }
+      username = username.trim();
+    }
+
+    return api.getUserHiscores(username, mode).then(format)
+  }
+
+  if (split.length > 2) {
+    username = '';
+    for (let i = 1; i < split.length; i++) {
+      username += i == 1 ? '' : '_';
+      username += split[i];
+    }
+    username = username.trim();
+
+    return api.getUserHiscores(username, 0).then(format)
+  } else {
+    return api.getUserHiscores(split[1], 0).then(format)
+  }
+}
 
 commands.mail = (nick, split, client) =>
   new Promise((f, r) => {
