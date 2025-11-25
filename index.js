@@ -58,8 +58,8 @@ ircClient.addListener('kill', (nick, _reason, _channels, _message) => {
   }
 });
 
-ircClient.addListener('error', (message) =>
-  console.log(`New error from IRC server: ${message}`)
+ircClient.addListener('error', (err) =>
+  console.error('New error from IRC server', err)
 );
 
 ircClient.addListener('join', (_channel, username) =>
